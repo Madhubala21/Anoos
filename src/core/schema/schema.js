@@ -24,6 +24,32 @@ const Admin = {
   },
 };
 
+const adminAuth = {
+  properties: {
+    authId: {
+      $ref: "defs#/definitions/adminAuth/authId",
+    },
+    uid: {
+      $ref: "defs#/definitions/adminAuth/uid",
+    },
+    token: {
+      $ref: "defs#/definitions/adminAuth/token",
+    },
+    ipv4: {
+      $ref: "defs#/definitions/adminAuth/ipv4",
+    },
+    userAgent: {
+      $ref: "defs#/definitions/adminAuth/userAgent",
+    },
+    latLong: {
+      $ref: "defs#/definitions/adminAuth/latLong",
+    },
+    status: {
+      $ref: "defs#/definitions/adminAuth/status",
+    },
+  },
+};
+
 const appConfig = {
   properties: {
     configId: {
@@ -93,471 +119,133 @@ const Banner = {
     },
   },
 };
-const adminAuth = {
+
+const distributor = {
   properties: {
-    authId: {
-      $ref: "defs#/definitions/adminAuth/authId",
+    distributorId: {
+      $ref: "defs#/definitions/distributor/distributorId",
     },
-    uid: {
-      $ref: "defs#/definitions/adminAuth/uid",
-    },
-    token: {
-      $ref: "defs#/definitions/adminAuth/token",
-    },
-    ipv4: {
-      $ref: "defs#/definitions/adminAuth/ipv4",
-    },
-    user: {
-      $ref: "defs#/definitions/adminAuth/user",
-    },
-    latLong: {
-      $ref: "defs#/definitions/adminAuth/latLong",
-    },
-    status: {
-      $ref: "defs#/definitions/adminAuth/status",
-    },
-  },
-};
-const homeLayout = {
-  properties: {
-    layout: {
-      $ref: "defs#/definitions/homeLayout/layout",
-    },
-    value: {
-      $ref: "defs#/definitions/homeLayout/value",
-    },
-    icons: {
-      $ref: "defs#/definitions/homeLayout/icons",
-    },
-  },
-};
-const Customer = {
-  properties: {
-    CustomerId: {
-      $ref: "defs#/definitions/Customer/customerId",
-    },
-    code: {
-      $ref: "defs#/definitions/Customer/code",
-    },
-    expiry: {
-      $ref: "defs#/definitions/Customer/expiry",
-    },
-    userName: {
-      $ref: "defs#/definitions/Customer/userName",
-    },
-    password: {
-      $ref: "defs#/definitions/Customer/password",
-    },
-    alaisName: {
-      $ref: "defs#/definitions/Customer/alaisName",
+    username: {
+      $ref: "defs#/definitions/distributor/username",
     },
     email: {
-      $ref: "defs#/definitions/Customer/email",
-    },
-    fcmToken: {
-      $ref: "defs#/definitions/Customer/fcmToken",
+      $ref: "defs#/definitions/distributor/email",
     },
     phone: {
-      $ref: "defs#/definitions/Customer/phone",
+      $ref: "defs#/definitions/distributor/phone",
     },
-    dob: {
-      $ref: "defs#/definitions/Customer/dob",
-    },
-    gender: {
-      $ref: "defs#/definitions/Customer/gender",
-    },
-    isMailVerified: {
-      $ref: "defs#/definitions/Customer/isMailVerified",
-    },
-    isPhoneVerified: {
-      $ref: "defs#/definitions/Customer/isPhoneVerified",
+    password: {
+      $ref: "defs#/definitions/distributor/password",
     },
     status: {
-      $ref: "defs#/definitions/Customer/status",
+      $ref: "defs#/definitions/distributor/status",
+    },
+    adminType: {
+      $ref: "defs#/definitions/distributor/adminType",
     },
   },
 };
-const shippingAddress = {
+
+const distributorAuth = {
   properties: {
-    addressId: {
-      $ref: "defs#/definitions/shippingAddress/addressId",
-    },
-    customerId: {
-      $ref: "defs#/definitions/shippingAddress/customerId",
-    },
-    state: {
-      $ref: "defs#/definitions/shippingAddress/state",
-    },
-    district: {
-      $ref: "defs#/definitions/shippingAddress/district",
-    },
-    city: {
-      $ref: "defs#/definitions/shippingAddress/city",
-    },
-    street: {
-      $ref: "defs#/definitions/shippingAddress/street",
-    },
-    landmark: {
-      $ref: "defs#/definitions/shippingAddress/landmark",
-    },
-    zipcode: {
-      $ref: "defs#/definitions/shippingAddress/zipcode",
-    },
-    addressType: {
-      $ref: "defs#/definitions/shippingAddress/addressType",
-    },
-    primary: {
-      $ref: "defs#/definitions/shippingAddress/primary",
-    },
-    status: {
-      $ref: "defs#/definitions/shippingAddress/status",
-    },
-  },
-};
-const userAuth = {
-  properties: {
-    authId: {
-      $ref: "defs#/definitions/userAuth/authId",
+    distributorId: {
+      $ref: "defs#/definitions/distributorAuth/distributorId",
     },
     token: {
-      $ref: "defs#/definitions/userAuth/token",
+      $ref: "defs#/definitions/distributorAuth/token",
     },
     ipv4: {
-      $ref: "defs#/definitions/userAuth/ipv4",
+      $ref: "defs#/definitions/distributorAuth/ipv4",
     },
     userAgent: {
-      $ref: "defs#/definitions/userAuth/userAgent",
-    },
-  },
-};
-const Taxes = {
-  properties: {
-    taxId: {
-      $ref: "defs#/definitions/Taxes/taxId",
-    },
-    taxPercentage: {
-      $ref: "defs#/definitions/Taxes/taxPercentage",
+      $ref: "defs#/definitions/distributorAuth/userAgent",
     },
     status: {
-      $ref: "defs#/definitions/Taxes/status",
+      $ref: "defs#/definitions/distributorAuth/status",
     },
   },
 };
 
-const Category = {
+const store = {
   properties: {
-    categoryId: {
-      $ref: "defs#/definitions/Category/categoryId",
+    storeId: {
+      $ref: "defs#/definitions/store/storeId",
     },
-    categoryName: {
-      $ref: "defs#/definitions/Category/categoryName",
+    name: {
+      $ref: "defs#/definitions/store/name",
     },
-    categoryImage: {
-      $ref: "defs#/definitions/Category/categoryImage",
+    streetName: {
+      $ref: "defs#/definitions/store/streetName",
     },
-    taxId: {
-      $ref: "defs#/definitions/Category/taxId",
+    city: {
+      $ref: "defs#/definitions/store/city",
     },
-    taxPercentage: {
-      $ref: "defs#/definitions/Category/taxPercentage",
+    districtName: {
+      $ref: "defs#/definitions/store/districtName",
     },
-    status: {
-      $ref: "defs#/definitions/Category/status",
+    phone: {
+      $ref: "defs#/definitions/store/phone",
     },
-  },
-};
-const Product = {
-  properties: {
-    productId: {
-      $ref: "defs#/definitions/Product/productId",
+    email: {
+      $ref: "defs#/definitions/store/email",
     },
-    categoryId: {
-      $ref: "defs#/definitions/Product/categoryId",
+    gstNumber: {
+      $ref: "defs#/definitions/store/gstNumber",
     },
-    categoryName: {
-      $ref: "defs#/definitions/Product/categoryName",
+    doorNumber: {
+      $ref: "defs#/definitions/store/doorNumber",
     },
-    tax: {
-      $ref: "defs#/definitions/Product/tax",
-    },
-    productImage: {
-      $ref: "defs#/definitions/Product/productImage",
-    },
-    productName: {
-      $ref: "defs#/definitions/Product/productName",
-    },
-    productDescription: {
-      $ref: "defs#/definitions/Product/productDescription",
-    },
-    moreInfo: {
-      $ref: "defs#/definitions/Product/moreInfo",
-    },
-    tags: {
-      $ref: "defs#/definitions/Product/tags",
-    },
-    availableLocations: {
-      $ref: "defs#/definitions/Product/availableLocations",
-    },
-    blogLimit: {
-      $ref: "defs#/definitions/Product/blogLimit",
-    },
-    status: {
-      $ref: "defs#/definitions/Product/status",
-    },
-  },
-};
-const Variant = {
-  properties: {
-    variantId: {
-      $ref: "defs#/definitions/Variant/variantId",
-    },
-    productId: {
-      $ref: "defs#/definitions/Variant/productId",
-    },
-    productName: {
-      $ref: "defs#/definitions/Variant/productName",
-    },
-    variantName: {
-      $ref: "defs#/definitions/Variant/variantName",
-    },
-    variantImage: {
-      $ref: "defs#/definitions/Variant/variantImage",
-    },
-    altTags: {
-      $ref: "defs#/definitions/Variant/altTags",
-    },
-    variantColor: {
-      $ref: "defs#/definitions/Variant/variantColor",
-    },
-    isColor: {
-      $ref: "defs#/definitions/Variant/isColor",
-    },
-    actualPrice: {
-      $ref: "defs#/definitions/Variant/actualPrice",
-    },
-    discountPrice: {
-      $ref: "defs#/definitions/Variant/discountPrice",
-    },
-    tax: {
-      $ref: "defs#/definitions/Variant/tax",
-    },
-    availableStock: {
-      $ref: "defs#/definitions/Variant/availableStock",
-    },
-    alternateStock: {
-      $ref: "defs#/definitions/Variant/alternateStock",
-    },
-    status: {
-      $ref: "defs#/definitions/Variant/status",
-    },
-  },
-};
-const ProductBlog = {
-  properties: {
-    blogId: {
-      $ref: "defs#/definitions/ProductBlog/BlogId",
-    },
-    productId: {
-      $ref: "defs#/definitions/ProductBlog/productId",
-    },
-    sectionImage: {
-      $ref: "defs#/definitions/ProductBlog/sectionImage",
-    },
-  },
-};
-const Title = {
-  properties: {
-    specId: {
-      $ref: "defs#/definitions/Title/specId",
-    },
-    categoryId: {
-      $ref: "defs#/definitions/Title/categoryId",
-    },
-    ProductTitle: {
-      $ref: "defs#/definitions/Title/ProductTitle",
-    },
-  },
-};
-const Specifications = {
-  properties: {
-    specId: {
-      $ref: "defs#/definitions/Specifications/specId",
-    },
-    productId: {
-      $ref: "defs#/definitions/Specifications/productId",
-    },
-    productSpecification: {
-      $ref: "defs#/definitions/Specifications/productSpecification",
-    },
-  },
-};
-const Wishlist = {
-  properties: {
-    WishlistId: {
-      $ref: "defs#/definitions/Wishlist/WishlistId",
-    },
-    customerId: {
-      $ref: "defs#/definitions/Wishlist/customerId",
-    },
-    productId: {
-      $ref: "defs#/definitions/Wishlist/productId",
-    },
-  },
-};
-const Cart = {
-  properties: {
-    cartId: {
-      $ref: "defs#/definitions/Cart/cartId",
-    },
-    customerId: {
-      $ref: "defs#/definitions/Cart/customerId",
-    },
-    productId: {
-      $ref: "defs#/definitions/Cart/productId",
-    },
-    productName: {
-      $ref: "defs#/definitions/Cart/productName",
-    },
-    variantId: {
-      $ref: "defs#/definitions/Cart/variantId",
-    },
-    variantColor: {
-      $ref: "defs#/definitions/Cart/variantColor",
-    },
-    variantImage: {
-      $ref: "defs#/definitions/Cart/variantImage",
-    },
-    singleProductPrice: {
-      $ref: "defs#/definitions/Cart/singleProductPrice",
-    },
-    actualPrice: {
-      $ref: "defs#/definitions/Cart/actualPrice",
-    },
-    totalPrice: {
-      $ref: "defs#/definitions/Cart/totalPrice",
-    },
-    inclusiveGST: {
-      $ref: "defs#/definitions/Cart/inclusiveGST",
-    },
-    units: {
-      $ref: "defs#/definitions/Cart/units",
-    },
-    index: {
-      $ref: "defs#/definitions/Cart/index",
-    },
-    tax: {
-      $ref: "defs#/definitions/Cart/tax",
-    },
-    status: {
-      $ref: "defs#/definitions/Cart/status",
-    },
-  },
-};
-const Order = {
-  properties: {
-    id: {
-      $ref: "defs#/definitions/Order/id",
-    },
-    customerId: {
-      $ref: "defs#/definitions/Order/customerId",
-    },
-    shippingAddress: {
-      $ref: "defs#/definitions/Order/shippingAddress",
-    },
-    cartId: {
-      $ref: "defs#/definitions/Order/cartId",
-    },
-    orderId: {
-      $ref: "defs#/definitions/Order/orderId",
-    },
-    paytmTransactionId: {
-      $ref: "defs#/definitions/Order/paytmTransactionId",
-    },
-    txnToken: {
-      $ref: "defs#/definitions/Order/txnToken",
-    },
-    checksumHash: {
-      $ref: "defs#/definitions/Order/checksumHash",
-    },
-    paymentMode: {
-      $ref: "defs#/definitions/Order/paymentMode",
-    },
-    bankTransactionId: {
-      $ref: "defs#/definitions/Order/bankTransactionId",
-    },
-    txnTimeStamp: {
-      $ref: "defs#/definitions/Order/txnTimeStamp",
-    },
-    txnStatus: {
-      $ref: "defs#/definitions/Order/txnStatus",
-    },
-    totalAmount: {
-      $ref: "defs#/definitions/Order/totalAmount",
-    },
-    paidAmount: {
-      $ref: "defs#/definitions/Order/paidAmount",
-    },
-    reason: {
-      $ref: "defs#/definitions/Order/reason",
-    },
-    paymentStatus: {
-      $ref: "defs#/definitions/Order/paymentStatus",
-    },
-    isReviewed: {
-      $ref: "defs#/definitions/Order/isReviewed",
-    },
-    orderStatus: {
-      $ref: "defs#/definitions/Order/orderStatus",
+    pinCode: {
+      $ref: "defs#/definitions/store/pinCode",
     },
   },
 };
 
-const Reviews = {
+const production = {
   properties: {
-    reviewId: {
-      $ref: "defs#/definitions/Reviews/reviewId",
+    productionId: {
+      $ref: "defs#/definitions/production/productionId",
     },
-    orderId: {
-      $ref: "defs#/definitions/Reviews/orderId",
+    username: {
+      $ref: "defs#/definitions/production/username",
     },
-    customerId: {
-      $ref: "defs#/definitions/Reviews/customerId",
+    email: {
+      $ref: "defs#/definitions/production/email",
     },
-    customerName: {
-      $ref: "defs#/definitions/Reviews/customerName",
+    phone: {
+      $ref: "defs#/definitions/production/phone",
     },
-    productId: {
-      $ref: "defs#/definitions/Reviews/productId",
-    },
-    rating: {
-      $ref: "defs#/definitions/Reviews/rating",
-    },
-    review: {
-      $ref: "defs#/definitions/Reviews/review",
+    password: {
+      $ref: "defs#/definitions/production/password",
     },
     status: {
-      $ref: "defs#/definitions/Reviews/status",
+      $ref: "defs#/definitions/production/status",
+    },
+    adminType: {
+      $ref: "defs#/definitions/production/adminType",
     },
   },
 };
 
-/**
- * @name  Products
- */
-
-export const categoryId = {
-  type: "object",
-  $id: "categoryId",
-  additionalProperties: false,
+const productionAuth = {
   properties: {
-    categoryId: Product.properties.categoryId,
+    productionId: {
+      $ref: "defs#/definitions/productionAuth/productionId",
+    },
+    token: {
+      $ref: "defs#/definitions/productionAuth/token",
+    },
+    ipv4: {
+      $ref: "defs#/definitions/productionAuth/ipv4",
+    },
+    userAgent: {
+      $ref: "defs#/definitions/productionAuth/userAgent",
+    },
+    status: {
+      $ref: "defs#/definitions/productionAuth/status",
+    },
   },
-  required: ["categoryId"],
 };
-
-/**
- * @name  User
- */
 
 export const userLogin = {
   type: "object",
@@ -599,273 +287,36 @@ export const AdminCreate = {
   $id: "AdminCreate",
   additionalProperties: false,
   properties: {
+    username: Admin.properties.username,
     email: Admin.properties.email,
     password: Admin.properties.password,
     phone: Admin.properties.phone,
   },
-  required: ["email", "password", "phone"],
+  required: ["username", "email", "password", "phone"],
 };
 
-export const appConfigCreate = {
+export const distributorCreate = {
   type: "object",
-  $id: "appConfigCreate",
+  $id: "distributorCreate",
   additionalProperties: false,
   properties: {
-    baseUrl: appConfig.properties.baseUrl,
-    hostEmail: appConfig.properties.hostEmail,
-    messagingKey: appConfig.properties.messagingKey,
-    paymentGatewayId: appConfig.properties.paymentGatewayId,
-    paymentGatewaySecret: appConfig.properties.paymentGatewaySecret,
-    passwordSecret: appConfig.properties.passwordSecret,
-    jwtClientSecret: appConfig.properties.jwtClientSecret,
-    jwtAdminSecret: appConfig.properties.jwtAdminSecret,
-    jwtEmailSecret: appConfig.properties.jwtEmailSecret,
+    username: distributor.properties.username,
+    email: distributor.properties.email,
+    password: distributor.properties.password,
+    phone: distributor.properties.phone,
   },
-  required: [
-    "baseUrl",
-    "hostEmail",
-    "messagingKey",
-    "paymentGatewayId",
-    "paymentGatewaySecret",
-    "passwordSecret",
-    "jwtClientSecret",
-    "jwtAdminSecret",
-    "jwtEmailSecret",
-  ],
+  required: ["username", "email", "password", "phone"],
 };
 
-export const homeLayoutCreate = {
+export const productionCreate = {
   type: "object",
-  $id: "homeLayoutCreate",
+  $id: "productionCreate",
   additionalProperties: false,
   properties: {
-    layout: homeLayout.properties.layout,
-    value: homeLayout.properties.value,
+    username: production.properties.username,
+    email: production.properties.email,
+    password: production.properties.password,
+    phone: production.properties.phone,
   },
-  required: ["layout", "value"],
-};
-
-export const CustomerCreate = {
-  type: "object",
-  $id: "CustomerCreate",
-  additionalProperties: false,
-  properties: {
-    CustomerId: Customer.properties.CustomerId,
-    userName: Customer.properties.userName,
-    password: Customer.properties.password,
-    alaisName: Customer.properties.alaisName,
-    email: Customer.properties.email,
-    phone: Customer.properties.phone,
-    dob: Customer.properties.dob,
-    gender: Customer.properties.gender,
-  },
-  required: [
-    "CustomerId",
-    "userName",
-    "password",
-    "alaisName",
-    "email",
-    "phone",
-    "dob",
-    "gender",
-  ],
-};
-export const shippingAddressCreate = {
-  type: "object",
-  $id: "shippingAddressCreate",
-  additionalProperties: false,
-  properties: {
-    addressId: shippingAddress.properties.addressId,
-    customerId: shippingAddress.properties.customerId,
-    state: shippingAddress.properties.state,
-    district: shippingAddress.properties.district,
-    city: shippingAddress.properties.city,
-    street: shippingAddress.properties.street,
-    landmark: shippingAddress.properties.landmark,
-    zipcode: shippingAddress.properties.zipcode,
-    primary: shippingAddress.properties.primary,
-    // status: shippingAddress.properties.status,
-  },
-  required: [
-    "AddressId",
-    "customerId",
-    "state",
-    "district",
-    "city",
-    "street",
-    "landmark",
-    "zipcode",
-    "primary",
-  ],
-};
-export const TaxesCreate = {
-  type: "object",
-  $id: "TaxesCreate",
-  additionalProperties: false,
-  properties: {
-    taxId: Taxes.properties.taxId,
-    taxPercentage: Taxes.properties.taxPercentage,
-    // status: Taxes.properties.status,
-  },
-  required: ["taxId", "taxPercentage"],
-};
-export const CategoryCreate = {
-  type: "object",
-  $id: "CategoryCreate",
-  additionalProperties: false,
-  properties: {
-    categoryId: Category.properties.categoryId,
-    categoryName: Category.properties.categoryName,
-    taxPercentage: Category.properties.taxPercentage,
-    status: Category.properties.status,
-  },
-  required: ["categoryId", "categoryName", "taxPercentage", "status"],
-};
-export const ProductCreate = {
-  type: "object",
-  $id: "ProductCreate",
-  additionalProperties: false,
-  properties: {
-    productId: Product.properties.productId,
-    categoryId: Product.properties.categoryId,
-    categoryName: Product.properties.categoryName,
-    productName: Product.properties.productName,
-    productDescription: Product.properties.productDescription,
-    tags: Product.properties.tags,
-    availableLocations: Product.properties.availableLocations,
-    // status: Product.properties.status,
-  },
-  required: [
-    "productId",
-    "categoryId",
-    "categoryName",
-    "productName",
-    "productDescription",
-    "tags",
-    "availableLocations",
-  ],
-};
-export const VariantCreate = {
-  type: "object",
-  $id: "VariantCreate",
-  additionalProperties: false,
-  properties: {
-    variantId: Variant.properties.variantId,
-    productId: Variant.properties.productId,
-    productName: Variant.properties.productName,
-    variantName: Variant.properties.variantName,
-    altTags: Variant.properties.altTags,
-    // color: Variant.properties.color,
-    actualPrice: Variant.properties.actualPrice,
-    discountPrice: Variant.properties.discountPrice,
-    availableStock: Variant.properties.availableStock,
-    alternateStock: Variant.properties.alternateStock,
-    // status: Variant.properties.status,
-  },
-  required: [
-    "variantId",
-    "productId",
-    "productName",
-    "variantName",
-    "altTags",
-    // "color",
-    "actualPrice",
-    "discountPrice",
-    "availableStock",
-    "alternateStock",
-  ],
-};
-export const ProductBlogCreate = {
-  type: "object",
-  $id: "ProductBlogCreate",
-  additionalProperties: false,
-  properties: {
-    blogId: ProductBlog.properties.blogId,
-    productId: ProductBlog.properties.productId,
-    sectionImage: ProductBlog.properties.sectionImage,
-    // status: ProductBlog.properties.status,
-  },
-  required: ["categoryId", "categoryName", "taxPercentage"],
-};
-export const WishlistCreate = {
-  type: "object",
-  $id: "WishlistCreate",
-  additionalProperties: false,
-  properties: {
-    WishlistId: Wishlist.properties.WishlistId,
-    customerId: Wishlist.properties.customerId,
-    productId: Wishlist.properties.productId,
-  },
-  required: ["WishlistId", "customerId", "productId"],
-};
-export const CartCreate = {
-  type: "object",
-  $id: "CartCreate",
-  additionalProperties: false,
-  properties: {
-    cartId: Cart.properties.cartId,
-    customerId: Cart.properties.customerId,
-    productId: Cart.properties.productId,
-    variantId: Cart.properties.variantId,
-    units: Cart.properties.units,
-    singleProductPrice: Cart.properties.singleProductPrice,
-    totalPrice: Cart.properties.totalPrice,
-    // status: Cart.properties.status,
-  },
-  required: [
-    "cartId",
-    "customerId",
-    "productId",
-    "variantId",
-    "units",
-    "singleProductPrice",
-    "totalPrice",
-  ],
-};
-
-export const OrderCreate = {
-  type: "object",
-  $id: "OrderCreate",
-  additionalProperties: false,
-  properties: {
-    id: Order.properties.id,
-    orderId: Order.properties.orderId,
-    customerId: Order.properties.customerId,
-    shippingAddress: Order.properties.shippingAddress,
-    cartId: Order.properties.cartId,
-    totalAmount: Order.properties.totalAmount,
-    paidAmount: Order.properties.paidAmount,
-    reason: Order.properties.reason,
-    paymentStatus: Order.properties.paymentStatus,
-    orderStatus: Order.properties.orderStatus,
-  },
-  required: [
-    "OrderId",
-    "orderId",
-    "customerId",
-    "shippingAddress",
-    "cartId",
-    "razorpayOrderId",
-    "razorpayPaymentId",
-    "totalAmount",
-    "paidAmount",
-    "reason",
-    "paymentStatus",
-    "orderStatus",
-  ],
-};
-export const ReviewsCreate = {
-  type: "object",
-  $id: "ReviewsCreate",
-  additionalProperties: false,
-  properties: {
-    reviewId: Reviews.properties.reviewId,
-    customerId: Reviews.properties.customerId,
-    productId: Reviews.properties.productId,
-    rating: Reviews.properties.rating,
-    review: Reviews.properties.review,
-    // arrayOfImages: Reviews.properties.arrayOfImages,
-    // status: Reviews.properties.status,
-  },
-  required: ["reviewId", "customerId", "productId", "rating", "review"],
+  required: ["username", "email", "password", "phone"],
 };

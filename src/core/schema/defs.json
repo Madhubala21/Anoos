@@ -35,6 +35,39 @@
         "enum": ["ROOT", "USER"]
       }
     },
+    
+    "adminAuth": {
+      "authId": {
+        "type": "string",
+        "title": "Id"
+      },
+      "uid": {
+        "type": "string",
+        "title": "Id"
+      },
+      "token": {
+        "type": "string",
+        "title": "Admin Token"
+      },
+      "ipv4": {
+        "type": "string",
+        "title": "UserIp"
+      },
+      "userAgent": {
+        "type": "string",
+        "title": "userAgent"
+      },
+      "latLong": {
+        "type": "string",
+        "title": "Location"
+      },
+      "status": {
+        "type": "string",
+        "title": "Account Status",
+        "enum": ["active", "inactive", "terminated"]
+      }
+    },
+
     "appConfig": {
       "configId": {
         "type": "string",
@@ -94,6 +127,7 @@
         "enum": ["active", "inactive", "terminated"]
       }
     },
+
     "Banner": {
       "bannerId": {
         "type": "string",
@@ -121,12 +155,44 @@
         "enum": ["active", "inactive", "terminated"]
       }
     },
-    "adminAuth": {
-      "authId": {
-        "type": "string",
-        "title": "Id"
+
+     "distributor": {
+      "distributorId": {
+        "type": "integer",
+        "title": "id"
       },
-      "uid": {
+      "username": {
+        "type": "string",
+        "title": "UserName",
+        "format": "onlyAlpha"
+      },
+      "email": {
+        "type": "string",
+        "title": "Email",
+        "format": "email"
+      },
+      "phone": {
+        "type": "string",
+        "title": "Contact"
+      },
+      "password": {
+        "type": "string",
+        "title": "Password"
+      },
+      "status": {
+        "type": "string",
+        "title": "Account Status",
+        "enum": ["active", "inactive", "terminated"]
+      },
+      "adminType": {
+        "type": "string",
+        "title": "User Type",
+        "enum": ["ROOT", "USER"]
+      }
+    },
+
+    "distributorAuth": {
+      "distributorId": {
         "type": "string",
         "title": "Id"
       },
@@ -142,16 +208,113 @@
         "type": "string",
         "title": "userAgent"
       },
-      "latLong": {
+      "status": {
         "type": "string",
-        "title": "Location"
+        "title": "Account Status",
+        "enum": ["active", "inactive", "terminated"]
+      }
+    },
+
+     "production": {
+      "productionId": {
+        "type": "integer",
+        "title": "id"
+      },
+      "username": {
+        "type": "string",
+        "title": "UserName",
+        "format": "onlyAlpha"
+      },
+      "email": {
+        "type": "string",
+        "title": "Email",
+        "format": "email"
+      },
+      "phone": {
+        "type": "string",
+        "title": "Contact"
+      },
+      "password": {
+        "type": "string",
+        "title": "Password"
+      },
+      "status": {
+        "type": "string",
+        "title": "Account Status",
+        "enum": ["active", "inactive", "terminated"]
+      },
+      "adminType": {
+        "type": "string",
+        "title": "User Type",
+        "enum": ["ROOT", "USER"]
+      }
+    },
+    
+     "productionAuth": {
+      "productionId": {
+        "type": "string",
+        "title": "Id"
+      },
+      "token": {
+        "type": "string",
+        "title": "Admin Token"
+      },
+      "ipv4": {
+        "type": "string",
+        "title": "UserIp"
+      },
+      "userAgent": {
+        "type": "string",
+        "title": "userAgent"
       },
       "status": {
         "type": "string",
         "title": "Account Status",
         "enum": ["active", "inactive", "terminated"]
       }
+    },
+
+     "store": {
+      "storeId": {
+        "type": "string",
+        "title": "Id"
+      },
+      "name": {
+        "type": "string",
+        "title": "name"
+      },
+      "streetName": {
+        "type": "string",
+        "title": "streetName"
+      },
+      "city": {
+        "type": "string",
+        "title": "city"
+      },
+     "districtName": {
+        "type": "string",
+        "title": "districtName"
+      },
+      "phone": {
+        "type": "string",
+        "title": "phone"
+      },
+      "email": {
+        "type": "string",
+        "title": "email"
+      },
+      "gstNumber": {
+        "type": "string",
+        "title": "gstNumber"
+      },
+      "doorNumber": {
+        "type": "string",
+        "title": "doorNumber"
+      },
+      "pinCode": {
+        "type": "string",
+        "title": "pinCode"
+      }
     }
-    
   }
 }
