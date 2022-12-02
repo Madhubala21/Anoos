@@ -14,13 +14,18 @@ import { userRouter } from "./src/App/routes/index.js";
 import { getStarted } from "./src/App/controller/authController.js";
 import { adminRouter } from "./src/Admin/routes/index.Routes.js";
 
-
-
-
 const app = express();
 
 //Enable cross origin policy
-app.use(cors({origin: "*",optionsSuccessStatus: 200,methods: "GET,POST,PUT",preflightContinue: false,credentials: true,}));
+app.use(
+  cors({
+    origin: "*",
+    optionsSuccessStatus: 200,
+    methods: "GET,POST,PUT",
+    preflightContinue: false,
+    credentials: true,
+  })
+);
 
 app.set("view engine", "ejs");
 app.set("views", "./src/core/views/ui/");
@@ -35,34 +40,41 @@ app.use(express.json());
 app.use(helmet());
 
 //routers
-app.use("/admin", adminRouter); 
+app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 
 //mailer
 app.get("/getStarted", getStarted);
 
-
 //checkStatus
-app.use('/status', async (req, res) => { res.json({ data: `${process.env.APP_NAME} API is Now Live` }) });
-
+app.use("/status", async (req, res) => {
+  res.json({ data: `${process.env.APP_NAME} API is Now Live` });
+});
 
 //404 handlers
 app.get("/", async (req, res) => {
-    res.status(404).render("404", { message: "Unable to find the requested resource", name: process.env.APP_NAME });
+  res.status(404).render("404", {
+    message: "Unable to find the requested resource",
+    name: process.env.APP_NAME,
+  });
 });
 app.use(function (req, res, next) {
-    res.status(404).render("404", { message: "Unable to find the requested resource", name: process.env.APP_NAME });
+  res.status(404).render("404", {
+    message: "Unable to find the requested resource",
+    name: process.env.APP_NAME,
+  });
 });
-
-
-
-const AppConfig = config.mode === "production" ? config.production : config.development;
-setup(AppConfig).then((config) => {
-app.listen(config.server.port);
-Logger.info(chalk.green(`${config.database.appName}  API Listening ✔️ ✔️ ✔️ `));
-}).catch((error) => {
+// console.log("process.env.port", process.env.DEV_PORT);
+const AppConfig =
+  config.mode === "production" ? config.production : config.development;
+setup(AppConfig)
+  .then((config) => {
+    app.listen(config.server.port);
+    Logger.info(
+      chalk.green(`${config.database.appName}  API Listening ✔️ ✔️ ✔️ `)
+    );
+  })
+  .catch((error) => {
     Logger.error(JSON.stringify(error));
     process.abort();
-}
-);
-
+  });

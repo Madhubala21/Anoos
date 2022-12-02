@@ -1,5 +1,5 @@
 {
-    "name": "bioforhealth",
+    "name": "anoos",
     "version": "1.0.0",
     "main": "app.js",
     "author": "nutz",
@@ -10,7 +10,7 @@
     },
     "scripts": {
         "start": "nodemon app.js",
-        "deploy": "pm2 start app.js --name 'BioForHealth (4002)'"
+        "deploy": "pm2 start app.js --name 'Anoos (4002)'"
     },
     "dependencies": {
         "ajv": "^8.8.2",
@@ -70,6 +70,6 @@
     "homepage": "https://github.com/nutzdev/BioForHealth-BackEnd#readme",
     "keywords": [
         "ecommerce",
-        "bioforhealth"
+        "Anoos"
     ]
 }

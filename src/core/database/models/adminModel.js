@@ -2,7 +2,7 @@ import sequelize from "sequelize";
 const { Model, DataTypes } = sequelize;
 import { connection } from "../connection.js";
 
-class admin extends Model { }
+class admin extends Model {}
 
 admin.init(
   {
@@ -11,10 +11,6 @@ admin.init(
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-    },
-    code: {
-      type: DataTypes.INTEGER(10),
-      allowNull: true,
     },
     username: {
       type: DataTypes.STRING(255),
@@ -42,13 +38,13 @@ admin.init(
       type: DataTypes.ENUM("ROOT", "USER"),
       allowNull: false,
       unique: true,
-      defaultValue: "USER",
+      defaultValue: "ROOT",
     },
   },
   { sequelize: connection, freezeTableName: true }
 );
 
-class adminAuthentication extends Model { }
+class adminAuthentication extends Model {}
 
 adminAuthentication.init(
   {
@@ -87,7 +83,7 @@ adminAuthentication.init(
   { sequelize: connection, freezeTableName: true }
 );
 
-class banner extends Model { }
+class banner extends Model {}
 
 banner.init(
   {
@@ -125,12 +121,11 @@ banner.init(
       allowNull: false,
       defaultValue: "active",
     },
-
   },
   { sequelize: connection, freezeTableName: true }
 );
 
-class config extends Model { }
+class config extends Model {}
 
 config.init(
   {
@@ -151,7 +146,8 @@ config.init(
     placeholder: {
       type: DataTypes.TEXT,
       allowNull: false,
-      defaultValue: "https://ik.imagekit.io/lokki/Avatar/placeholder_XFzrDmSml.png?updatedAt=1638958916450"
+      defaultValue:
+        "https://ik.imagekit.io/lokki/Avatar/placeholder_XFzrDmSml.png?updatedAt=1638958916450",
     },
     shippingFee: {
       type: DataTypes.BIGINT.UNSIGNED,
@@ -206,30 +202,4 @@ config.init(
   { sequelize: connection, freezeTableName: true }
 );
 
-class homeLayout extends Model { }
-
-homeLayout.init(
-  {
-    id: {
-      type: DataTypes.BIGINT.UNSIGNED,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-    },
-    layout: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    value: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    icons: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-  },
-  { sequelize: connection, freezeTableName: true, timestamps: false }
-);
-
-export { admin, banner, config, adminAuthentication, homeLayout };
+export { admin, banner, config, adminAuthentication };

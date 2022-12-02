@@ -2,9 +2,9 @@ import express from "express";
 import { connection } from "../connection.js";
 import * as Models from "../models/index.js";
 import require from "requirejs";
-import * as Error from "../../errors/ErrorConstant.js"
+import * as Error from "../../errors/ErrorConstant.js";
 const { Op, Sequelize } = require("sequelize");
-export class userDbController { }
+export class userDbController {}
 userDbController.scope = "defaultScope";
 userDbController.Models = Models;
 userDbController.connection = connection;
@@ -40,7 +40,6 @@ userDbController.Auth = {
     }
   },
   createUid: async (data) => {
-
     try {
       const updated_data = await userDbController.Models.customer.update(
         { code: data.code, expiry: data.expiry },
@@ -71,9 +70,12 @@ userDbController.Auth = {
   },
   verifyUser: async (data) => {
     try {
-      return await userDbController.Models.customer.update({ status: "active", isMailVerified: "yes" }, {
-        where: { id: data.id },
-      });
+      return await userDbController.Models.customer.update(
+        { status: "active", isMailVerified: "yes" },
+        {
+          where: { id: data.id },
+        }
+      );
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
@@ -84,7 +86,7 @@ userDbController.Auth = {
         {
           password: data.password,
           code: 0,
-          expiry: 0
+          expiry: 0,
         },
         {
           where: { email: data.email },
@@ -110,9 +112,9 @@ userDbController.Auth = {
       try {
         return await userDbController.Models.customerAuthentication.findOne({
           where: {
-            token: token
-          }
-        })
+            token: token,
+          },
+        });
       } catch (error) {
         return null;
       }
@@ -121,9 +123,9 @@ userDbController.Auth = {
       try {
         return await userDbController.Models.customerAuthentication.destroy({
           where: {
-            token: token
-          }
-        })
+            token: token,
+          },
+        });
       } catch (error) {
         throw Error.SomethingWentWrong();
       }
@@ -154,7 +156,8 @@ userDbController.Customer = {
       return await userDbController.Models.customer.findOne({
         where: {
           id: data.userId,
-        }, raw: true,
+        },
+        raw: true,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -165,9 +168,19 @@ userDbController.Customer = {
       return await userDbController.Models.customer.findOne({
         where: {
           id: data.customerId,
-        }, attributes: {
-          exclude: ["code", "password", "fcmToken", "createdAt", "updatedAt", "expiry", "status"]
-        }, raw: true,
+        },
+        attributes: {
+          exclude: [
+            "code",
+            "password",
+            "fcmToken",
+            "createdAt",
+            "updatedAt",
+            "expiry",
+            "status",
+          ],
+        },
+        raw: true,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -185,11 +198,19 @@ userDbController.Customer = {
         include: {
           model: Models.customer,
           attributes: {
-            exclude: ["code", "password", "fcmToken", "status", "createdAt", "updatedAt"]
-          }, where: {
-            status: "active"
-          }
-        }
+            exclude: [
+              "code",
+              "password",
+              "fcmToken",
+              "status",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+          where: {
+            status: "active",
+          },
+        },
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -204,15 +225,17 @@ userDbController.Customer = {
           alaisName: data.alaisName,
           dob: data.dob,
           gender: data.sex,
-        }, {
-        where: {
-          id: tokenId,
         },
-      });
+        {
+          where: {
+            id: tokenId,
+          },
+        }
+      );
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
-  }
+  },
 };
 
 userDbController.Address = {
@@ -221,10 +244,10 @@ userDbController.Address = {
       return await userDbController.Models.shippingAddress.findAll({
         where: {
           customerId: data.customerId,
-          status: "active"
+          status: "active",
         },
         attributes: {
-          exclude: ["createdAt", "updatedAt", "status", "customerId"]
+          exclude: ["createdAt", "updatedAt", "status", "customerId"],
         },
         raw: true,
       });
@@ -255,7 +278,7 @@ userDbController.Address = {
           landmark: data.landmark,
           zipcode: data.zipcode,
           addressType: data.addressType,
-          status: "active"
+          status: "active",
         },
         raw: true,
       });
@@ -312,7 +335,7 @@ userDbController.Address = {
         zipcode: data.zipcode,
         addressType: data.addressType,
         primary: data.primary,
-        status: "active"
+        status: "active",
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -320,14 +343,16 @@ userDbController.Address = {
   },
   updateAddress: async (data) => {
     try {
-      return await userDbController.Models.shippingAddress.update({
-        customerId: data.customerId,
-        status: "inactive",
-      }, {
-        where: {
-          id: data.addressId
+      return await userDbController.Models.shippingAddress.update(
+        {
+          customerId: data.customerId,
+          status: "inactive",
+        },
+        {
+          where: {
+            id: data.addressId,
+          },
         }
-      }
       );
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -335,21 +360,23 @@ userDbController.Address = {
   },
   updateAddressbyId: async (data) => {
     try {
-      return await userDbController.Models.shippingAddress.update({
-        state: data.state,
-        district: data.district,
-        city: data.city,
-        street: data.street,
-        landmark: data.landmark || null,
-        zipcode: data.zipcode,
-        addressType: data.addressType,
-        // primary: data.primary,
-      }, {
-        where: {
-          id: data.addressId,
-          customerId: data.customerId,
+      return await userDbController.Models.shippingAddress.update(
+        {
+          state: data.state,
+          district: data.district,
+          city: data.city,
+          street: data.street,
+          landmark: data.landmark || null,
+          zipcode: data.zipcode,
+          addressType: data.addressType,
+          // primary: data.primary,
+        },
+        {
+          where: {
+            id: data.addressId,
+            customerId: data.customerId,
+          },
         }
-      }
       );
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -357,14 +384,16 @@ userDbController.Address = {
   },
   changePrimary: async (data, body) => {
     try {
-      return await userDbController.Models.shippingAddress.update({
-        primary: body.primary,
-      }, {
-        where: {
-          id: data.id,
-          customerId: data.customerId
+      return await userDbController.Models.shippingAddress.update(
+        {
+          primary: body.primary,
+        },
+        {
+          where: {
+            id: data.id,
+            customerId: data.customerId,
+          },
         }
-      }
       );
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -372,20 +401,21 @@ userDbController.Address = {
   },
   changeAllPrimary: async (data) => {
     try {
-      return await userDbController.Models.shippingAddress.update({
-        primary: "no",
-      }, {
-        where: {
-          customerId: data.customerId
+      return await userDbController.Models.shippingAddress.update(
+        {
+          primary: "no",
+        },
+        {
+          where: {
+            customerId: data.customerId,
+          },
         }
-      }
       );
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
 };
-
 
 userDbController.Wishlist = {
   fetchWishlist: async (tokenId) => {
@@ -414,7 +444,6 @@ userDbController.Wishlist = {
     }
   },
 
-
   addWishlist: async (data, tokenId) => {
     try {
       return await userDbController.Models.wishlist.create({
@@ -433,15 +462,13 @@ userDbController.Wishlist = {
           productId: data.productId,
           customerId: data.customerId,
           id: data.id,
-        }
+        },
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
-
 };
-
 
 userDbController.Shop = {
   getFaq: async () => {
@@ -451,7 +478,7 @@ userDbController.Shop = {
           status: "active",
         },
         raw: true,
-        attributes: ["title", "answer"]
+        attributes: ["title", "answer"],
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -462,17 +489,37 @@ userDbController.Shop = {
     try {
       return await userDbController.Models.product.findAll({
         where: {
-          status: "active"
-        }, attributes: ["id", "categoryId",
+          status: "active",
+        },
+        attributes: [
+          "id",
+          "categoryId",
           "categoryName",
           "productImage",
           "productName",
           "productDescription",
           "availableLocations",
-          [Sequelize.literal("(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " + data.customerId + "  LIMIT 1)"),
-            "favourites"],
-          [Sequelize.literal("(SELECT productVariants.discountPrice,productVariants.variantName FROM productVariants as productVariants WHERE productVariants.productId=product.id LIMIT 1)"), "discountPrice", "variantName"],
-          [Sequelize.literal("(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"), "ratings",]
+          [
+            Sequelize.literal(
+              "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " +
+                data.customerId +
+                "  LIMIT 1)"
+            ),
+            "favourites",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT productVariants.discountPrice,productVariants.variantName FROM productVariants as productVariants WHERE productVariants.productId=product.id LIMIT 1)"
+            ),
+            "discountPrice",
+            "variantName",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"
+            ),
+            "ratings",
+          ],
         ],
         raw: true,
       });
@@ -484,21 +531,42 @@ userDbController.Shop = {
     try {
       return await userDbController.Models.product.findAll({
         where: {
-          status: "active"
-        }, attributes: ["id", "categoryId",
+          status: "active",
+        },
+        attributes: [
+          "id",
+          "categoryId",
           "categoryName",
           "productImage",
           "productName",
           "productDescription",
           "availableLocations",
-          [Sequelize.literal("(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " + token + "  LIMIT 1)"),
+          [
+            Sequelize.literal(
+              "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " +
+                token +
+                "  LIMIT 1)"
+            ),
             "favourites",
           ],
-          [Sequelize.literal("(SELECT productVariants.discountPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id LIMIT 1)"),
-            "discountPrice",],
-          [Sequelize.literal("(SELECT productVariants.actualPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id LIMIT 1)"),
-            "actualPrice",],
-          [Sequelize.literal("(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"), "ratings",]
+          [
+            Sequelize.literal(
+              "(SELECT productVariants.discountPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id LIMIT 1)"
+            ),
+            "discountPrice",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT productVariants.actualPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id LIMIT 1)"
+            ),
+            "actualPrice",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"
+            ),
+            "ratings",
+          ],
         ],
         raw: true,
         limit: 4,
@@ -511,20 +579,37 @@ userDbController.Shop = {
     try {
       return await userDbController.Models.product.findAll({
         where: {
-          status: "active"
-        }, attributes: ["id", "categoryId",
+          status: "active",
+        },
+        attributes: [
+          "id",
+          "categoryId",
           "categoryName",
           "productImage",
           "productName",
           "productDescription",
           "tags",
           "availableLocations",
-          [Sequelize.literal("(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " + token + "  LIMIT 1)"),
+          [
+            Sequelize.literal(
+              "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " +
+                token +
+                "  LIMIT 1)"
+            ),
             "favourites",
           ],
-          [Sequelize.literal("(SELECT productVariants.discountPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id LIMIT 1)"),
-            "discountPrice",],
-          [Sequelize.literal("(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"), "ratings",]
+          [
+            Sequelize.literal(
+              "(SELECT productVariants.discountPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id LIMIT 1)"
+            ),
+            "discountPrice",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"
+            ),
+            "ratings",
+          ],
         ],
         raw: true,
         order: [["price", "ASC"]],
@@ -539,8 +624,9 @@ userDbController.Shop = {
       return await userDbController.Models.wishlist.findAll({
         where: {
           customerId: token,
-        }, raw: true,
-      })
+        },
+        raw: true,
+      });
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
@@ -551,21 +637,30 @@ userDbController.Shop = {
         include: {
           model: Models.productVariants,
           where: {
-            status: "active"
+            status: "active",
           },
           attributes: ["discountPrice", "id", "variantName", "variantImage"],
           required: false,
         },
-        attributes: ["id", "productImage", "productName", "productDescription",
-          [Sequelize.literal("(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"), "ratings",],],
+        attributes: [
+          "id",
+          "productImage",
+          "productName",
+          "productDescription",
+          [
+            Sequelize.literal(
+              "(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"
+            ),
+            "ratings",
+          ],
+        ],
         raw: true,
         nest: true,
         where: {
           id: { [Op.in]: productIds },
           status: "active",
-        }
-      },
-      );
+        },
+      });
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
@@ -575,12 +670,13 @@ userDbController.Shop = {
     try {
       return await userDbController.Models.product.findAll({
         where: {
-          status: "active"
+          status: "active",
         },
 
         order: [["productName", "ASC"]],
         raw: true,
-        attributes: ["id",
+        attributes: [
+          "id",
           "categoryName",
           "productImage",
           "productName",
@@ -589,13 +685,30 @@ userDbController.Shop = {
           "availableLocations",
           [
             Sequelize.literal(
-              "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " + data.customerId + "  LIMIT 1)"), "favourites",
+              "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " +
+                data.customerId +
+                "  LIMIT 1)"
+            ),
+            "favourites",
           ],
-          [Sequelize.literal("(SELECT productVariants.discountPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id AND productVariants.status='active' LIMIT 1)"),
-            "discountPrice",],
-          [Sequelize.literal("(SELECT productVariants.actualPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id AND productVariants.status='active' LIMIT 1)"),
-            "actualPrice",],
-          [Sequelize.literal("(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"), "ratings",]
+          [
+            Sequelize.literal(
+              "(SELECT productVariants.discountPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id AND productVariants.status='active' LIMIT 1)"
+            ),
+            "discountPrice",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT productVariants.actualPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id AND productVariants.status='active' LIMIT 1)"
+            ),
+            "actualPrice",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"
+            ),
+            "ratings",
+          ],
         ],
         limit: 16,
       });
@@ -605,29 +718,48 @@ userDbController.Shop = {
   },
   getFilters: async (data) => {
     try {
-      return await userDbController.Models.product.findAll({
-        include: {
-          model: Models.productVariants, where: {
-            status: "active"
+      return await userDbController.Models.product.findAll(
+        {
+          include: {
+            model: Models.productVariants,
+            where: {
+              status: "active",
+            },
+            attributes: [
+              "discountPrice",
+              "actualPrice",
+              "variantName",
+              "variantImage",
+            ],
+            required: false,
           },
-          attributes: ["discountPrice", "actualPrice", "variantName", "variantImage"], required: false,
-        }, where: {
-          status: "active"
-        },
-        attributes: ["id", "categoryId",
-          "categoryName",
-          "productImage",
-          "productName",
-          "productDescription",
-          "availableLocations",
-          [Sequelize.literal("(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " + data.customerId + "  LIMIT 1)"),
-            "favourites",
+          where: {
+            status: "active",
+          },
+          attributes: [
+            "id",
+            "categoryId",
+            "categoryName",
+            "productImage",
+            "productName",
+            "productDescription",
+            "availableLocations",
+            [
+              Sequelize.literal(
+                "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " +
+                  data.customerId +
+                  "  LIMIT 1)"
+              ),
+              "favourites",
+            ],
+            [
+              Sequelize.literal("(SELECT AVG(rating) FROM reviews LIMIT 1)"),
+              "ratings",
+            ],
           ],
-          [Sequelize.literal("(SELECT AVG(rating) FROM reviews LIMIT 1)"), "ratings",]
-        ],
-        raw: true,
-        nest: true
-      },
+          raw: true,
+          nest: true,
+        },
         {
           where: {
             status: "active",
@@ -641,13 +773,16 @@ userDbController.Shop = {
   fetchProductSpecs: async (data) => {
     if (data.productTitle != null && data.productTitle != undefined) {
       try {
-        return await userDbController.Models.productSpecifications.findAll({
-          where: {
-            productTitle: data.productTitle,
+        return await userDbController.Models.productSpecifications.findAll(
+          {
+            where: {
+              productTitle: data.productTitle,
+            },
+          },
+          {
+            raw: true,
           }
-        }, {
-          raw: true,
-        });
+        );
       } catch (error) {
         throw Error.SomethingWentWrong();
       }
@@ -656,7 +791,9 @@ userDbController.Shop = {
         return await userDbController.Models.productSpecifications.findOne({
           where: {
             productId: data.productId,
-          }, attributes: { exclude: ["createdAt", "updatedAt"], }, raw: true
+          },
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+          raw: true,
         });
       } catch (error) {
         throw Error.SomethingWentWrong();
@@ -669,7 +806,9 @@ userDbController.Shop = {
         return await userDbController.Models.product.findOne({
           where: {
             id: data.productId,
-          }, attributes: ["moreInfo", "productDescription"], raw: true
+          },
+          attributes: ["moreInfo", "productDescription"],
+          raw: true,
         });
       } catch (error) {
         throw Error.SomethingWentWrong();
@@ -681,10 +820,10 @@ userDbController.Shop = {
     try {
       return await userDbController.Models.banner.findAll({
         where: {
-          status: "active"
+          status: "active",
         },
         attributes: {
-          exclude: ["status", "createdAt", "updatedAt"]
+          exclude: ["status", "createdAt", "updatedAt"],
         },
         order: [["bannerType", "DESC"]],
         raw: true,
@@ -695,18 +834,22 @@ userDbController.Shop = {
   },
 
   getAllCategories: async () => {
-
     try {
       return await userDbController.Models.category.findAll({
         order: [["id", "ASC"]],
         attributes: {
-          exclude: ["status", "createdAt", "updatedAt", "taxId", "taxPercentage"]
+          exclude: [
+            "status",
+            "createdAt",
+            "updatedAt",
+            "taxId",
+            "taxPercentage",
+          ],
         },
         raw: true,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
-
     }
   },
 
@@ -714,21 +857,42 @@ userDbController.Shop = {
     try {
       return await userDbController.Models.product.findAll({
         where: {
-          status: "active"
-        }, attributes: ["id", "categoryId",
+          status: "active",
+        },
+        attributes: [
+          "id",
+          "categoryId",
           "categoryName",
           "productImage",
           "productName",
           "productDescription",
           "availableLocations",
-          [Sequelize.literal("(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " + token + "  LIMIT 1)"),
+          [
+            Sequelize.literal(
+              "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=product.id AND wishlist.customerId= " +
+                token +
+                "  LIMIT 1)"
+            ),
             "favourites",
           ],
-          [Sequelize.literal("(SELECT productVariants.discountPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id AND productVariants.status='active' LIMIT 1)"),
-            "discountPrice",],
-          [Sequelize.literal("(SELECT productVariants.actualPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id AND productVariants.status='active' LIMIT 1)"),
-            "actualPrice",],
-          [Sequelize.literal("(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"), "ratings",]
+          [
+            Sequelize.literal(
+              "(SELECT productVariants.discountPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id AND productVariants.status='active' LIMIT 1)"
+            ),
+            "discountPrice",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT productVariants.actualPrice FROM productVariants as productVariants WHERE productVariants.productId=product.id AND productVariants.status='active' LIMIT 1)"
+            ),
+            "actualPrice",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT AVG(rating) FROM reviews WHERE reviews.productId=product.id LIMIT 1)"
+            ),
+            "ratings",
+          ],
         ],
         raw: true,
       });
@@ -741,7 +905,7 @@ userDbController.Shop = {
       return await userDbController.Models.productVariants.findOne({
         where: {
           id: data.variantId,
-          status: "active"
+          status: "active",
         },
         raw: true,
       });
@@ -754,11 +918,12 @@ userDbController.Shop = {
       return await userDbController.Models.productVariants.findAll({
         where: {
           productId: data.productId,
-          status: "active"
+          status: "active",
         },
         order: [["actualPrice", "ASC"]],
         raw: true,
-        attributes: ["id",
+        attributes: [
+          "id",
           "productId",
           "productName",
           "variantName",
@@ -769,7 +934,9 @@ userDbController.Shop = {
           "discountPrice",
           [
             Sequelize.literal(
-              "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=productVariants.productId AND wishlist.customerId= " + token + "  LIMIT 1)"
+              "(SELECT IF(wishlist.productId IS NULL,FALSE,TRUE) FROM wishlist as wishlist WHERE wishlist.productId=productVariants.productId AND wishlist.customerId= " +
+                token +
+                "  LIMIT 1)"
             ),
             "favourites",
           ],
@@ -784,12 +951,12 @@ userDbController.Shop = {
       return await userDbController.Models.productVariants.findAll({
         where: {
           id: {
-            [Op.in]: data
+            [Op.in]: data,
           },
-          status: "active"
+          status: "active",
         },
         raw: true,
-        attributes: ["availableStock"]
+        attributes: ["availableStock"],
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -803,22 +970,31 @@ userDbController.Shop = {
           status: "active",
         },
         include: {
-          model: Models.productVariants, where: {
-            status: "active"
+          model: Models.productVariants,
+          where: {
+            status: "active",
           },
-          attributes: ["discountPrice", "variantName", "actualPrice", "variantImage"], required: false,
+          attributes: [
+            "discountPrice",
+            "variantName",
+            "actualPrice",
+            "variantImage",
+          ],
+          required: false,
           include: {
             model: Models.reviews,
             where: {
               rating: {
                 [Op.in]: data.ratings || [1, 2, 3, 4, 5],
-              }
+              },
             },
-            attributes: ["rating",],
-            required: false
+            attributes: ["rating"],
+            required: false,
           },
         },
-        attributes: ["id", "categoryId",
+        attributes: [
+          "id",
+          "categoryId",
           "categoryName",
           "productImage",
           "productName",
@@ -827,17 +1003,19 @@ userDbController.Shop = {
         ],
 
         raw: true,
-        nest: true
-      },
-      );
+        nest: true,
+      });
     } catch (error) {
-      console.log("🚀 ~ file: userDbController.js ~ line 834 ~ getCategoryProduct: ~ error", error)
+      console.log(
+        "🚀 ~ file: userDbController.js ~ line 834 ~ getCategoryProduct: ~ error",
+        error
+      );
       throw Error.SomethingWentWrong();
     }
   },
   getAllRecommended: async (data) => {
     try {
-      return await userDbController.Models.recommendedProducts.findAll()
+      return await userDbController.Models.recommendedProducts.findAll();
     } catch (error) {
       throw Error.InternalError();
     }
@@ -850,11 +1028,11 @@ userDbController.Shop = {
             [Op.in]: productIds,
           },
 
-          status: "active"
+          status: "active",
         },
         raw: true,
         attributes: ["id", "productName", "productImage", "categoryName"],
-      })
+      });
     } catch (error) {
       console.log(error);
       throw Error.InternalError();
@@ -862,16 +1040,22 @@ userDbController.Shop = {
   },
 };
 
-
 userDbController.Review = {
   getProductReview: async (data) => {
     try {
       return await userDbController.Models.reviews.findAll({
         where: {
           productId: data.productId,
-          status: "active"
+          status: "active",
         },
-        attributes: ["id", "customerName", "customerImage", "rating", "review", "createdAt"],
+        attributes: [
+          "id",
+          "customerName",
+          "customerImage",
+          "rating",
+          "review",
+          "createdAt",
+        ],
         raw: true,
       });
     } catch (error) {
@@ -888,7 +1072,13 @@ userDbController.Review = {
             customerId: token,
           },
         },
-        attributes: ["productId", "productName", "variantImage", "actualPrice", "discountPrice"],
+        attributes: [
+          "productId",
+          "productName",
+          "variantImage",
+          "actualPrice",
+          "discountPrice",
+        ],
         raw: true,
         nest: true,
       });
@@ -901,16 +1091,65 @@ userDbController.Review = {
       return await userDbController.Models.reviews.findOne({
         where: {
           productId: data.productId,
-          status: "active"
+          status: "active",
         },
         attributes: [
-          [Sequelize.literal("(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " + data.productId + " AND reviews.rating=5)"), 'excellent'],
-          [Sequelize.literal("(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " + data.productId + " AND reviews.rating=4)"), 'best'],
-          [Sequelize.literal("(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " + data.productId + " AND reviews.rating=3)"), 'good'],
-          [Sequelize.literal("(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " + data.productId + " AND reviews.rating=2)"), 'poor'],
-          [Sequelize.literal("(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " + data.productId + " AND reviews.rating=1)"), 'verypoor'],
-          [Sequelize.literal("(SELECT AVG(rating) FROM reviews WHERE reviews.productId = " + data.productId + ")"), 'overallRatings'],
-          [Sequelize.literal("(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " + data.productId + ")"), 'noOfRatings'],
+          [
+            Sequelize.literal(
+              "(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " +
+                data.productId +
+                " AND reviews.rating=5)"
+            ),
+            "excellent",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " +
+                data.productId +
+                " AND reviews.rating=4)"
+            ),
+            "best",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " +
+                data.productId +
+                " AND reviews.rating=3)"
+            ),
+            "good",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " +
+                data.productId +
+                " AND reviews.rating=2)"
+            ),
+            "poor",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " +
+                data.productId +
+                " AND reviews.rating=1)"
+            ),
+            "verypoor",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT AVG(rating) FROM reviews WHERE reviews.productId = " +
+                data.productId +
+                ")"
+            ),
+            "overallRatings",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT COUNT(rating) FROM reviews WHERE reviews.productId = " +
+                data.productId +
+                ")"
+            ),
+            "noOfRatings",
+          ],
         ],
         raw: true,
       });
@@ -929,7 +1168,7 @@ userDbController.Review = {
         rating: data.rating,
         review: data.review,
         variantId: data.variantId,
-        status: "active"
+        status: "active",
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -937,28 +1176,34 @@ userDbController.Review = {
   },
   putProductReview: async (data, tokenId) => {
     try {
-      return await userDbController.Models.reviews.update({
-        customerId: tokenId,
-        rating: data.rating,
-        review: data.review,
-      }, {
-        where: {
-          id: data.id,
+      return await userDbController.Models.reviews.update(
+        {
+          customerId: tokenId,
+          rating: data.rating,
+          review: data.review,
         },
-      });
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
   updateOrderReview: async (data) => {
     try {
-      return await userDbController.Models.orders.update({
-        isReviewed: data.isReviewed,
-      }, {
-        where: {
-          orderId: data.orderId,
+      return await userDbController.Models.orders.update(
+        {
+          isReviewed: data.isReviewed,
         },
-      });
+        {
+          where: {
+            orderId: data.orderId,
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
       throw Error.SomethingWentWrong();
@@ -984,25 +1229,29 @@ userDbController.Cart = {
       return await userDbController.Models.cart.findAll({
         where: {
           customerId: tokenId,
-          status: "active"
+          status: "active",
         },
         include: {
           model: Models.productVariants,
-          attributes: ["availableStock", "variantImage"]
+          attributes: ["availableStock", "variantImage"],
         },
-        attributes: ["id",
+        attributes: [
+          "id",
           "productId",
           "productName",
           "variantId",
           "variantColor",
           "index",
           "variantImage",
-          "units", "tax",
+          "units",
+          "tax",
           "singleProductPrice",
-          "actualPrice", "inclusiveGST",
-          "totalPrice",],
+          "actualPrice",
+          "inclusiveGST",
+          "totalPrice",
+        ],
         raw: true,
-        nest: true
+        nest: true,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1013,10 +1262,9 @@ userDbController.Cart = {
       return await userDbController.Models.cart.findAll({
         where: {
           customerId: data.customerId,
-          status: "active"
+          status: "active",
         },
-        attributes: ["id",
-          "totalPrice"],
+        attributes: ["id", "totalPrice"],
         raw: true,
       });
     } catch (error) {
@@ -1028,8 +1276,9 @@ userDbController.Cart = {
       return await userDbController.Models.cart.count({
         where: {
           customerId: tokenId,
-          status: "active"
-        }, raw: true,
+          status: "active",
+        },
+        raw: true,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1041,7 +1290,12 @@ userDbController.Cart = {
         where: {
           customerId: tokenId,
           status: "active",
-        }, raw: true, attributes: [[Sequelize.fn('sum', Sequelize.col('totalPrice')), 'totalPrice'], [Sequelize.fn('sum', Sequelize.col('actualPrice')), 'actualPrice']],
+        },
+        raw: true,
+        attributes: [
+          [Sequelize.fn("sum", Sequelize.col("totalPrice")), "totalPrice"],
+          [Sequelize.fn("sum", Sequelize.col("actualPrice")), "actualPrice"],
+        ],
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1055,8 +1309,9 @@ userDbController.Cart = {
           customerId: data.customerId,
           variantId: data.variantId,
           variantColor: data.variantColor,
-          status: "active"
-        }, raw: true,
+          status: "active",
+        },
+        raw: true,
       });
     } catch (error) {
       console.log(error);
@@ -1068,8 +1323,9 @@ userDbController.Cart = {
       return await userDbController.Models.cart.findOne({
         where: {
           id: data.cartId,
-          status: "active"
-        }, raw: true,
+          status: "active",
+        },
+        raw: true,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1082,10 +1338,20 @@ userDbController.Cart = {
           id: {
             [Op.in]: cartIds,
           },
-          status: "inactive"
-        }, raw: true, attributes: {
-          exclude: ["status", "index", "actualPrice", "singleProductPrice", "customerId", "updatedAt", "inclusiveGST"]
-        }
+          status: "inactive",
+        },
+        raw: true,
+        attributes: {
+          exclude: [
+            "status",
+            "index",
+            "actualPrice",
+            "singleProductPrice",
+            "customerId",
+            "updatedAt",
+            "inclusiveGST",
+          ],
+        },
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1099,10 +1365,10 @@ userDbController.Cart = {
             [Op.in]: cartIds,
           },
           customerId: token,
-          status: "inactive"
+          status: "inactive",
         },
         raw: true,
-        attributes: ["variantImage", "units"]
+        attributes: ["variantImage", "units"],
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1110,53 +1376,63 @@ userDbController.Cart = {
   },
   createCart: async (data) => {
     try {
-      return await userDbController.Models.cart.create({
-        customerId: data.customerId,
-        productId: data.productId,
-        productName: data.productName,
-        variantId: data.variantId,
-        variantColor: data.variantColor,
-        variantImage: data.variantImage,
-        singleProductPrice: data.singleProductPrice,
-        actualPrice: data.actualPrice,
-        totalPrice: data.totalPrice,
-        inclusiveGST: data.inclusiveGST,
-        tax: data.tax,
-        units: data.units,
-        index: data.index,
-        status: data.status,
-      }, { raw: true });
+      return await userDbController.Models.cart.create(
+        {
+          customerId: data.customerId,
+          productId: data.productId,
+          productName: data.productName,
+          variantId: data.variantId,
+          variantColor: data.variantColor,
+          variantImage: data.variantImage,
+          singleProductPrice: data.singleProductPrice,
+          actualPrice: data.actualPrice,
+          totalPrice: data.totalPrice,
+          inclusiveGST: data.inclusiveGST,
+          tax: data.tax,
+          units: data.units,
+          index: data.index,
+          status: data.status,
+        },
+        { raw: true }
+      );
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
   putCart: async (data) => {
     try {
-      return await userDbController.Models.cart.update({
-        actualPrice: data.actualPrice,
-        totalPrice: data.totalPrice,
-        withGST: data.withGST,
-        units: data.units,
-      }, {
-        where: {
-          id: data.cartId,
-        }
-      }, { raw: true });
+      return await userDbController.Models.cart.update(
+        {
+          actualPrice: data.actualPrice,
+          totalPrice: data.totalPrice,
+          withGST: data.withGST,
+          units: data.units,
+        },
+        {
+          where: {
+            id: data.cartId,
+          },
+        },
+        { raw: true }
+      );
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
   archiveCart: async (data) => {
     try {
-      return await userDbController.Models.cart.update({
-        status: "inactive",
-      }, {
-        where: {
-          id: {
-            [Op.in]: data.cartIds
-          }
+      return await userDbController.Models.cart.update(
+        {
+          status: "inactive",
+        },
+        {
+          where: {
+            id: {
+              [Op.in]: data.cartIds,
+            },
+          },
         }
-      });
+      );
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
@@ -1167,7 +1443,8 @@ userDbController.Cart = {
         where: {
           customerId: data.customerId,
           id: data.cartId,
-        }, raw: true,
+        },
+        raw: true,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1181,11 +1458,17 @@ userDbController.Order = {
       return await userDbController.Models.orders.findAll({
         where: {
           customerId: tokenId,
-          orderStatus: "accepted"
+          orderStatus: "accepted",
         },
-        attributes: ["cartId", "orderId", "paidAmount", "orderStatus", "createdAt"],
+        attributes: [
+          "cartId",
+          "orderId",
+          "paidAmount",
+          "orderStatus",
+          "createdAt",
+        ],
         raw: true,
-        order: [["id", "DESC"]]
+        order: [["id", "DESC"]],
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1236,10 +1519,18 @@ userDbController.Order = {
           orderId: data.orderId,
           customerId: data.customerId,
           orderStatus: {
-            [Op.ne]: "pending"
-          }
+            [Op.ne]: "pending",
+          },
         },
-        raw: true, attributes: ["cartId", "isReviewed", "deliveryType", "orderStatus", "createdAt", "orderId"]
+        raw: true,
+        attributes: [
+          "cartId",
+          "isReviewed",
+          "deliveryType",
+          "orderStatus",
+          "createdAt",
+          "orderId",
+        ],
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1253,7 +1544,7 @@ userDbController.Order = {
         orderId: data.orderId,
         totalAmount: data.amount,
         txnToken: data.paytmTxntoken,
-        isReviewed: data.isReviewed
+        isReviewed: data.isReviewed,
       });
     } catch (error) {
       console.log(error);
@@ -1262,24 +1553,27 @@ userDbController.Order = {
   },
   updatePaynowOrder: async (data) => {
     try {
-      return await userDbController.Models.orders.update({
-        paymentMode: data.paymentMode + "," + data.bankName + "," + data.gatewayName,
-        shippingAddress: data.addressId,
-        paidAmount: data.txnAmount,
-        txnStatus: data.txnStatus,
-        paytmTransactionId: data.txnId,
-        bankTransactionId: data.bankTxnId,
-        txnTimeStamp: data.txnDate,
-        checksumHash: data.checksum,
-        deliveryType: data.deliveryType,
-        orderStatus: "accepted",
-        paymentStatus: "success"
-      }, {
-        where: {
-          customerId: data.customerId,
-          orderId: data.orderId,
+      return await userDbController.Models.orders.update(
+        {
+          paymentMode:
+            data.paymentMode + "," + data.bankName + "," + data.gatewayName,
+          shippingAddress: data.addressId,
+          paidAmount: data.txnAmount,
+          txnStatus: data.txnStatus,
+          paytmTransactionId: data.txnId,
+          bankTransactionId: data.bankTxnId,
+          txnTimeStamp: data.txnDate,
+          checksumHash: data.checksum,
+          deliveryType: data.deliveryType,
+          orderStatus: "accepted",
+          paymentStatus: "success",
+        },
+        {
+          where: {
+            customerId: data.customerId,
+            orderId: data.orderId,
+          },
         }
-      }
       );
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -1287,18 +1581,20 @@ userDbController.Order = {
   },
   updateCODOrder: async (data) => {
     try {
-      return await userDbController.Models.orders.update({
-        shippingAddress: data.addressId,
-        paidAmount: data.txnAmount,
-        deliveryType: data.deliveryType,
-        orderStatus: "accepted",
-        paymentStatus: "pending"
-      }, {
-        where: {
-          customerId: data.customerId,
-          orderId: data.orderId,
+      return await userDbController.Models.orders.update(
+        {
+          shippingAddress: data.addressId,
+          paidAmount: data.txnAmount,
+          deliveryType: data.deliveryType,
+          orderStatus: "accepted",
+          paymentStatus: "pending",
+        },
+        {
+          where: {
+            customerId: data.customerId,
+            orderId: data.orderId,
+          },
         }
-      }
       );
     } catch (error) {
       throw Error.SomethingWentWrong();
