@@ -301,7 +301,8 @@
       },
       "email": {
         "type": "string",
-        "title": "email"
+        "title": "email",
+        "format":"email"
       },
       "gstNumber": {
         "type": "string",
@@ -311,10 +312,85 @@
         "type": "string",
         "title": "doorNumber"
       },
-      "pinCode": {
+      "pincode": {
         "type": "string",
-        "title": "pinCode"
+        "title": "pincode"
+      },
+      "paymentMethod":{
+        "type":"string",
+        "title":"payment method",
+        "enum": ["bill to bill", "cod","split"]
       }
+    },
+
+    "order":{
+      "orderId": {
+        "type": "string",
+        "title": "Id"
+      },
+      "productName": {
+        "type": "string",
+        "title": "productName"
+      },
+      "quantity": {
+        "type": "string",
+        "title": "quantity"
+      },
+      "amount": {
+        "type": "string",
+        "title": "amount"
+      },
+      "orderStatus": {
+        "type": "string",
+        "title": "orderStatus",
+        "enum": ["processing", "prepared"]
+      }
+    },
+
+    "expense":{
+      "expenseId": {
+        "type": "string",
+        "title": "Id"
+      },
+      "petrol": {
+        "type": "string",
+        "title": "petrol"
+      },
+      "tea": {
+        "type": "string",
+        "title": "tea"
+      },
+      "food": {
+        "type": "string",
+        "title": "food"
+      },
+      "repair": {
+        "type": "string",
+        "title": "repair"
+      },
+      "others": {
+        "type": "string",
+        "title": "others"
+      }
+  },
+  
+   "delivery":{
+    "deliveryId": {
+      "type": "string",
+      "title": "Id"
+    },
+    "productName": {
+      "type": "string",
+      "title": "productName"
+    },
+    "quantity": {
+      "type": "number",
+      "title": "quantity"
+    },
+    "price": {
+      "type": "number",
+      "title": "price"
     }
   }
+}
 }

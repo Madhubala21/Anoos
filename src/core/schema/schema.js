@@ -166,41 +166,6 @@ const distributorAuth = {
   },
 };
 
-const store = {
-  properties: {
-    storeId: {
-      $ref: "defs#/definitions/store/storeId",
-    },
-    name: {
-      $ref: "defs#/definitions/store/name",
-    },
-    streetName: {
-      $ref: "defs#/definitions/store/streetName",
-    },
-    city: {
-      $ref: "defs#/definitions/store/city",
-    },
-    districtName: {
-      $ref: "defs#/definitions/store/districtName",
-    },
-    phone: {
-      $ref: "defs#/definitions/store/phone",
-    },
-    email: {
-      $ref: "defs#/definitions/store/email",
-    },
-    gstNumber: {
-      $ref: "defs#/definitions/store/gstNumber",
-    },
-    doorNumber: {
-      $ref: "defs#/definitions/store/doorNumber",
-    },
-    pinCode: {
-      $ref: "defs#/definitions/store/pinCode",
-    },
-  },
-};
-
 const production = {
   properties: {
     productionId: {
@@ -244,6 +209,104 @@ const productionAuth = {
     status: {
       $ref: "defs#/definitions/productionAuth/status",
     },
+  },
+};
+
+const store = {
+  properties: {
+    storeId: {
+      $ref: "defs#/definitions/store/storeId",
+    },
+    name: {
+      $ref: "defs#/definitions/store/name",
+    },
+    streetName: {
+      $ref: "defs#/definitions/store/streetName",
+    },
+    city: {
+      $ref: "defs#/definitions/store/city",
+    },
+    districtName: {
+      $ref: "defs#/definitions/store/districtName",
+    },
+    phone: {
+      $ref: "defs#/definitions/store/phone",
+    },
+    email: {
+      $ref: "defs#/definitions/store/email",
+    },
+    gstNumber: {
+      $ref: "defs#/definitions/store/gstNumber",
+    },
+    doorNumber: {
+      $ref: "defs#/definitions/store/doorNumber",
+    },
+    pincode: {
+      $ref: "defs#/definitions/store/pincode",
+    },
+    paymentMethod: {
+      $ref: "defs#/definitions/store/paymentMethod",
+    },
+  },
+};
+
+const order = {
+  properties: {
+    orderId: {
+      $ref: "defs#/definitions/order/orderId",
+    },
+    productName: {
+      $ref: "defs#/definitions/order/productName",
+    },
+    quantity: {
+      $ref: "defs#/definitions/order/quantity",
+    },
+    amount: {
+      $ref: "defs#/definitions/order/amount",
+    },
+    orderStatus: {
+      $ref: "defs#/definitions/order/orderStatus",
+    },
+  },
+};
+
+const expense = {
+  properties: {
+    expenseId: {
+      $ref: "defs#/definitions/expense/expenseId",
+    },
+    petrol: {
+      $ref: "defs#/definitions/expense/petrol",
+    },
+    tea: {
+      $ref: "defs#/definitions/expense/tea",
+    },
+    food: {
+      $ref: "defs#/definitions/expense/food",
+    },
+    repair: {
+      $ref: "defs#/definitions/expense/repair",
+    },
+    others: {
+      $ref: "defs#/definitions/expense/others",
+    },
+  },
+};
+
+const delivery = {
+  properties: {
+    deliveryId: {
+      $ref: "defs#/definitions/delivery/deliveryId",
+    },
+    productName: {
+      $ref: "defs#/definitions/delivery/productName",
+    },
+    quantity: {
+      $ref: "defs#/definitions/delivery/quantity",
+    },
+    price: {
+      $ref: "defs#/definitions/delivery/price",
+    },    
   },
 };
 
@@ -319,4 +382,62 @@ export const productionCreate = {
     phone: production.properties.phone,
   },
   required: ["username", "email", "password", "phone"],
+};
+
+export const storeCreate = {
+  type: "object",
+  $id: "storeCreate",
+  additionalProperties: false,
+  properties: {
+    name: store.properties.name,
+    streetName: store.properties.streetName,
+    city: store.properties.city,
+    districtName: store.properties.districtName,
+    phone: store.properties.phone,
+    email: store.properties.email,
+    gstNumber: store.properties.gstNumber,
+    doorNumber: store.properties.doorNumber,
+    pincode: store.properties.pincode,
+    paymentMethod:store.properties.paymentMethod
+  },
+  required: ["name","streetName","city","districtName","phone", "email","gstNumber","doorNumber","pincode","paymentMethod", "phone"],
+};
+
+export const orderCreate = {
+  type: "object",
+  $id: "orderCreate",
+  additionalProperties: false,
+  properties: {
+    productName: order.properties.productName,
+    quantity: order.properties.quantity,
+    amount: order.properties.amount,
+    orderStatus: order.properties.orderStatus,
+  },
+  required: ["producctName","quantity","amount","orderStatus",],
+};
+
+export const expenseCreate = {
+  type: "object",
+  $id: "expenseCreate",
+  additionalProperties: false,
+  properties: {
+    petrol: expense.properties.petrol,
+    tea: expense.properties.tea,
+    food: expense.properties.food,
+    repair: expense.properties.repair,
+    others: expense.properties.others,
+  },
+  required: ["petrol","tea","food","repair","others"],
+};
+
+export const deliveryCreate = {
+  type: "object",
+  $id: "deliveryCreate",
+  additionalProperties: false,
+  properties: {
+    productName: delivery.properties.productName,
+    quantity: delivery.properties.quantity,
+    price: delivery.properties.price,
+  },
+  required: ["productName","quantity","price"],
 };
