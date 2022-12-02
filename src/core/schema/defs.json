@@ -156,7 +156,7 @@
       }
     },
 
-     "distributor": {
+    "distributor": {
       "distributorId": {
         "type": "integer",
         "title": "id"
@@ -215,7 +215,7 @@
       }
     },
 
-     "production": {
+    "production": {
       "productionId": {
         "type": "integer",
         "title": "id"
@@ -250,7 +250,7 @@
       }
     },
     
-     "productionAuth": {
+    "productionAuth": {
       "productionId": {
         "type": "string",
         "title": "Id"
@@ -274,10 +274,14 @@
       }
     },
 
-     "store": {
+    "store": {
       "storeId": {
         "type": "string",
         "title": "Id"
+      },
+       "image": {
+        "type": "string",
+        "title": "image"
       },
       "name": {
         "type": "string",
@@ -333,7 +337,7 @@
         "title": "productName"
       },
       "quantity": {
-        "type": "string",
+        "type": "number",
         "title": "quantity"
       },
       "amount": {
@@ -343,7 +347,7 @@
       "orderStatus": {
         "type": "string",
         "title": "orderStatus",
-        "enum": ["processing", "prepared"]
+        "enum": ["notTaken","processing", "prepared"]
       }
     },
 
@@ -372,9 +376,9 @@
         "type": "string",
         "title": "others"
       }
-  },
+    },
   
-   "delivery":{
+    "delivery":{
     "deliveryId": {
       "type": "string",
       "title": "Id"
@@ -391,6 +395,21 @@
       "type": "number",
       "title": "price"
     }
-  }
+    },
+
+    "stock":{
+    "stockId": {
+      "type": "string",
+      "title": "Id"
+    },
+    "stockName": {
+      "type": "string",
+      "title": "stockName"
+    },
+    "quantity": {
+      "type": "number",
+      "title": "quantity"
+    }
+    }
 }
 }

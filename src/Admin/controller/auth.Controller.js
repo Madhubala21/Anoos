@@ -115,7 +115,6 @@ export const adminSessions = {
 };
 
 export const adminRegister = async (req, res) => {
-  
   authMiddleware.Admin.adminRegister(req)
     .then((data) => {
       const response = ApplicationResult.forCreated();

@@ -217,6 +217,9 @@ const store = {
     storeId: {
       $ref: "defs#/definitions/store/storeId",
     },
+    image: {
+      $ref: "defs#/definitions/store/image",
+    },
     name: {
       $ref: "defs#/definitions/store/name",
     },
@@ -306,7 +309,21 @@ const delivery = {
     },
     price: {
       $ref: "defs#/definitions/delivery/price",
-    },    
+    },
+  },
+};
+
+const stock = {
+  properties: {
+    stockId: {
+      $ref: "defs#/definitions/stock/stockId",
+    },
+    stockName: {
+      $ref: "defs#/definitions/stock/stockName",
+    },
+    quantity: {
+      $ref: "defs#/definitions/stock/quantity",
+    },
   },
 };
 
@@ -389,6 +406,7 @@ export const storeCreate = {
   $id: "storeCreate",
   additionalProperties: false,
   properties: {
+    image: store.properties.image,
     name: store.properties.name,
     streetName: store.properties.streetName,
     city: store.properties.city,
@@ -398,9 +416,22 @@ export const storeCreate = {
     gstNumber: store.properties.gstNumber,
     doorNumber: store.properties.doorNumber,
     pincode: store.properties.pincode,
-    paymentMethod:store.properties.paymentMethod
+    paymentMethod: store.properties.paymentMethod,
   },
-  required: ["name","streetName","city","districtName","phone", "email","gstNumber","doorNumber","pincode","paymentMethod", "phone"],
+  required: [
+    "image",
+    "name",
+    "streetName",
+    "city",
+    "districtName",
+    "phone",
+    "email",
+    "gstNumber",
+    "doorNumber",
+    "pincode",
+    "paymentMethod",
+    "phone",
+  ],
 };
 
 export const orderCreate = {
@@ -413,7 +444,7 @@ export const orderCreate = {
     amount: order.properties.amount,
     orderStatus: order.properties.orderStatus,
   },
-  required: ["producctName","quantity","amount","orderStatus",],
+  required: ["producctName", "quantity", "amount", "orderStatus"],
 };
 
 export const expenseCreate = {
@@ -427,7 +458,7 @@ export const expenseCreate = {
     repair: expense.properties.repair,
     others: expense.properties.others,
   },
-  required: ["petrol","tea","food","repair","others"],
+  required: ["petrol", "tea", "food", "repair", "others"],
 };
 
 export const deliveryCreate = {
@@ -439,5 +470,16 @@ export const deliveryCreate = {
     quantity: delivery.properties.quantity,
     price: delivery.properties.price,
   },
-  required: ["productName","quantity","price"],
+  required: ["productName", "quantity", "price"],
+};
+
+export const stockCreate = {
+  type: "object",
+  $id: "stockCreate",
+  additionalProperties: false,
+  properties: {
+    stockName: stock.properties.stockName,
+    quantity: stock.properties.quantity,
+  },
+  required: ["stockName", "quantity"],
 };

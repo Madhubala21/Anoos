@@ -1,21 +1,18 @@
 import { Router } from "express";
-import { shopRouter } from "./shop.Routes.js";
+import { addUsersRouter } from "./addUsers.Routes.js";
 import { authRouter } from "./auth.Routes.js";
-import { productRouter } from "./product.Routes.js";
-import { orderRouter } from "./orderRoutes.js";
+import { deliveryRouter } from "./delivery.Routes.js";
+import { stockRouter } from "./stock.Routes.js";
 
 const adminRouter = Router();
 
 //admin auth
 adminRouter.use("/auth", authRouter);
 
-//shop
-adminRouter.use("/shop", storeRouter);
+adminRouter.use("/auth", addUsersRouter);
 
-//product
-adminRouter.use("/product", productRouter);
+adminRouter.use("/delivery", deliveryRouter);
 
-//orders
-adminRouter.use("/orders", orderRouter);
+adminRouter.use("/stock", stockRouter);
 
 export { adminRouter };
