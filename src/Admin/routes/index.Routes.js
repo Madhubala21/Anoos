@@ -9,7 +9,7 @@ const adminRouter = Router();
 //admin auth
 adminRouter.use("/auth", authRouter);
 
-adminRouter.use("/auth", addUsersRouter);
+adminRouter.use("/addUser", addUsersRouter);
 
 adminRouter.use("/delivery", deliveryRouter);
 

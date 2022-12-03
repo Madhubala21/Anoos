@@ -193,4 +193,6 @@ expense.init(
   { sequelize: connection, freezeTableName: true }
 );
 
+// export { distributor, distributorAuthentication, store, order, expense };
+
 export { distributor, distributorAuthentication, store, order, expense };

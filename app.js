@@ -10,9 +10,11 @@ import { Logger } from "./src/core/lib/logger.js";
 import dotenv from "dotenv";
 dotenv.config();
 //require routers
-import { userRouter } from "./src/App/routes/index.js";
-import { getStarted } from "./src/App/controller/authController.js";
+
+import { getStarted } from "./src/Distributor/controller/authController.js";
 import { adminRouter } from "./src/Admin/routes/index.Routes.js";
+import { distributorRouter } from "./src/Distributor/routes/index.js";
+import { productionRouter } from "./src/Production/routes/index.js";
 
 const app = express();
 
@@ -41,7 +43,8 @@ app.use(helmet());
 
 //routers
 app.use("/admin", adminRouter);
-app.use("/user", userRouter);
+app.use("/distributor", distributorRouter);
+app.use("/production", productionRouter);
 
 //mailer
 app.get("/getStarted", getStarted);

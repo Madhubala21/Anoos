@@ -31,7 +31,6 @@ export const emailLogin = async (req, res) => {
     });
 };
 
-
 /**
  * @name logout user
  * @param {*} body
@@ -104,20 +103,35 @@ export const verifyCode = async (req, res) => {
     });
 };
 
-
 export const getStarted = async (req, res) => {
   authMiddleware.User.get_started(req)
     .then((data) => {
       const response = ApplicationResult.forCreated();
       var statuscode = 0;
-      ApplicationResponse.success(response, null, (response) => (statuscode = response.status));
+      ApplicationResponse.success(
+        response,
+        null,
+        (response) => (statuscode = response.status)
+      );
       const statusmessage = data;
-      if (statusmessage == "Account Verified" || statusmessage == "Account already Verified") {
-        res.render("accountverified", { message: data, name: process.env.APP_NAME });
+      if (
+        statusmessage == "Account Verified" ||
+        statusmessage == "Account already Verified"
+      ) {
+        res.render("accountverified", {
+          message: data,
+          name: process.env.APP_NAME,
+        });
       } else if (statusmessage == "Token Expired ! Try Again") {
-        res.render("401", { message: "Link Expired ! Signup Again", name: process.env.APP_NAME });
+        res.render("401", {
+          message: "Link Expired ! Signup Again",
+          name: process.env.APP_NAME,
+        });
       } else {
-        res.render("contactadmin", { message: data, name: process.env.APP_NAME });
+        res.render("contactadmin", {
+          message: data,
+          name: process.env.APP_NAME,
+        });
       }
       // res.json({ status: statuscode, data: data });
     })
@@ -133,7 +147,7 @@ export const getStarted = async (req, res) => {
  * @param {*} body
  */
 
-export const UserAuthenticate = async (req, res, next) => {
+export const productionAuthenticate = async (req, res, next) => {
   authMiddleware.User.verify(req)
     .then((data) => {
       req.token = data;
