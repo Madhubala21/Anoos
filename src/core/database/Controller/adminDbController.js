@@ -235,7 +235,7 @@ adminDbController.Admin = {
           phone: data.phone,
           password: data.password,
           status: "inactive",
-          type: "USER",
+          type: "ROOT",
         },
         { raw: true }
       );

@@ -327,40 +327,40 @@ const stock = {
   },
 };
 
-export const userLogin = {
-  type: "object",
-  $id: "userLogin",
-  additionalProperties: false,
-  properties: {
-    email: Customer.properties.email,
-    password: Customer.properties.password,
-  },
-  required: ["email", "password"],
-};
+// export const userLogin = {
+//   type: "object",
+//   $id: "userLogin",
+//   additionalProperties: false,
+//   properties: {
+//     email: Customer.properties.email,
+//     password: Customer.properties.password,
+//   },
+//   required: ["email", "password"],
+// };
 
-export const sendEmail = {
-  type: "object",
-  $id: "sendEmail",
-  additionalProperties: false,
-  properties: {
-    email: Customer.properties.email,
-    code: Customer.properties.code,
-    password: Customer.properties.password,
-  },
-  required: ["email", "password"],
-};
+// export const sendEmail = {
+//   type: "object",
+//   $id: "sendEmail",
+//   additionalProperties: false,
+//   properties: {
+//     email: Customer.properties.email,
+//     code: Customer.properties.code,
+//     password: Customer.properties.password,
+//   },
+//   required: ["email", "password"],
+// };
 
-export const verifyLogin = {
-  type: "object",
-  $id: "verifyLogin",
-  additionalProperties: false,
-  properties: {
-    email: Customer.properties.email,
-    code: Customer.properties.code,
-    password: Customer.properties.password,
-  },
-  required: ["email", "password"],
-};
+// export const verifyLogin = {
+//   type: "object",
+//   $id: "verifyLogin",
+//   additionalProperties: false,
+//   properties: {
+//     email: Customer.properties.email,
+//     code: Customer.properties.code,
+//     password: Customer.properties.password,
+//   },
+//   required: ["email", "password"],
+// };
 
 export const AdminCreate = {
   type: "object",
