@@ -430,7 +430,6 @@ export const storeCreate = {
     "doorNumber",
     "pincode",
     "paymentMethod",
-    "phone",
   ],
 };
 
