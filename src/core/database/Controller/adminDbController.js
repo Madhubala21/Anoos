@@ -21,14 +21,17 @@ adminDbController.Appconfigs = async () => {
 
 adminDbController.Auth = {
   checkemailExists: async (data) => {
+    console.log("data", data);
     try {
       return await adminDbController.Models.admin.findOne({
         where: {
           email: data.email,
+          status: "active",
         },
         raw: true,
       });
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
@@ -37,13 +40,14 @@ adminDbController.Auth = {
       return await adminDbController.Models.admin.findOne({
         where: {
           [Op.or]: {
-            email: data.userName || null,
-            phone: data.userName || null,
+            email: data.email || null,
+            phone: data.phone || null,
           },
         },
         raw: true,
       });
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
@@ -124,6 +128,7 @@ adminDbController.Auth = {
   },
   session: {
     createSession: async (token, device, id) => {
+      // console.log("device", device);
       try {
         return await adminDbController.Models.adminAuthentication.create({
           uid: id,
@@ -133,6 +138,7 @@ adminDbController.Auth = {
           userAgent: device.userAgent,
         });
       } catch (error) {
+        console.log(error);
         throw Error.SomethingWentWrong("Unable to Crate Session");
       }
     },
@@ -168,6 +174,7 @@ adminDbController.Auth = {
       }
     },
     findSessionId: async (data) => {
+      console.log("data", data);
       try {
         return await adminDbController.Models.adminAuthentication.findOne({
           where: {
@@ -176,6 +183,7 @@ adminDbController.Auth = {
           order: [["id", "DESC"]],
         });
       } catch (error) {
+        console.log(error);
         throw Error.SomethingWentWrong();
       }
     },
@@ -231,6 +239,7 @@ adminDbController.Admin = {
     try {
       return await adminDbController.Models.admin.create(
         {
+          username: data.username,
           email: data.email,
           phone: data.phone,
           password: data.password,
@@ -240,30 +249,58 @@ adminDbController.Admin = {
         { raw: true }
       );
     } catch (error) {
+      console.log(error);
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  viewAdminProfile: async (token) => {
+    try {
+      return await adminDbController.Models.admin.findOne(
+        {
+          where: {
+            id: token.id,
+            status: "active",
+          },
+          attributes: {
+            exclude: ["id", "createdAt", "updatedAt", "status", "type"],
+          },
+        },
+        { raw: true }
+      );
+    } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
 };
 
 adminDbController.Users = {
-  viewDistributor: async () => {
+  viewDistributor: async (data) => {
     try {
-      return await adminDbController.Models.banner.findAll({
-        order: [["bannerType", "ASC"]],
-        raw: true,
-        attributes: ["id", "bannerImage", "bannerType", "status"],
+      return await adminDbController.Models.distributor.findOne({
+        where: {
+          id: data.id,
+        },
+        attributes: {
+          exclude: ["id", "type", "createdAt", "updatedAt"],
+        },
       });
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
 
-  getDistributor: async () => {
+  getDistributor: async (data) => {
     try {
-      return await adminDbController.Models.banner.findAll({
-        order: [["bannerType", "ASC"]],
-        raw: true,
-        attributes: ["id", "bannerImage", "bannerType", "status"],
+      return await adminDbController.Models.distributor.findOne({
+        where: {
+          [Op.or]: {
+            email: data.email || null,
+            phone: data.phone || null,
+          },
+        },
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -272,18 +309,17 @@ adminDbController.Users = {
 
   addDistributor: async (data) => {
     try {
-      return await adminDbController.Models.banner.create(
+      return await adminDbController.Models.distributor.create(
         {
-          bannerImage: data.bannerImage,
-          // bannerText: data.bannerText,
-          bannerType: data.bannerType,
-          // bannerFor: data.bannerFor,
-          // productOrCategoryId: data.productOrCategoryId,
-          status: "active",
+          username: data.username,
+          email: data.email,
+          phone: data.phone,
+          password: data.password,
         },
         { raw: true }
       );
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },

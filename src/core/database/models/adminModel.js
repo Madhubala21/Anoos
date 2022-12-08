@@ -70,10 +70,10 @@ adminAuthentication.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    latLong: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
+    // latLong: {
+    //   type: DataTypes.TEXT,
+    //   allowNull: false,
+    // },
     status: {
       type: DataTypes.ENUM("active", "inactive", "terminate"),
       allowNull: false,
@@ -198,7 +198,7 @@ stock.init(
       allowNull: false,
     },
     quantity: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
@@ -220,11 +220,11 @@ delivery.init(
       allowNull: false,
     },
     quantity: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     price: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },

@@ -143,7 +143,7 @@ order.init(
       allowNull: false,
     },
     quantity: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     amount: {

@@ -2,20 +2,22 @@ import require from "requirejs";
 var CryptoJS = require("crypto-js");
 import * as Error from "../../core/errors/ErrorConstant.js";
 import { authentications } from "../../core/utils/jwt.js";
-import { NodeMailerfunction } from "../../core/utils/nodemailer.js";
 import { PayloadCompiler } from "../../core/inc/access/PayloadCompiler.js";
 import { distributorDbController } from "../../core/database/Controller/distributorDbController.js";
 
 export class authMiddleware {}
 
 authMiddleware.User = {
-  email_login: async ({ body }, device) => {
-    const validated = await PayloadCompiler.compile(body, "userLogin");
-    const userFound = await distributorDbController.Auth.checkemailExists(
-      validated.data
-    );
+  distributorLogin: async ({ body }, device) => {
+    // const validated = await PayloadCompiler.compile(body, "userLogin");
+    const userFound = await distributorDbController.Auth.checkemailExists(body);
     const passwordSecret = await configs.passwordSecret;
-    if (!userFound || Object.keys(userFound).length === 0) {
+    // if (!userFound || Object.keys(userFound).length === 0) {
+    if (
+      userFound === null ||
+      userFound === undefined ||
+      Object.keys(userFound).length === 0
+    ) {
       //no user available shouldnt be displayed to user
       throw Error.SomethingWentWrong("Wrong Email/Password. Try Again!");
     } else if (userFound.status === "terminated") {
@@ -25,8 +27,12 @@ authMiddleware.User = {
       throw Error.SomethingWentWrong("Account InActive");
     } else if (userFound.status === "active") {
       try {
-        const plain = CryptoJS.AES.decrypt(userFound.password, passwordSecret);
+        const plain = await CryptoJS.AES.decrypt(
+          userFound.password,
+          passwordSecret
+        );
         const decrypted = plain.toString(CryptoJS.enc.Utf8);
+        console.log("decrypted", decrypted);
         if (decrypted === body.password) {
           const token = await authentications.generateUserJWT({
             userId: userFound.id,
@@ -42,6 +48,7 @@ authMiddleware.User = {
                 encryptedToken,
                 device
               );
+
             if (addSession != null && addSession != undefined) {
               return { token: encryptedToken };
             } else {
@@ -51,7 +58,7 @@ authMiddleware.User = {
             throw Error.SomethingWentWrong();
           }
         } else {
-          throw Error.SomethingWentWrong("Wrong Email/Password. Try Again!");
+          throw Error.SomethingWentWrong("Wrong Email/Password.Try Again!");
         }
       } catch (error) {
         throw Error.SomethingWentWrong("Wrong Email/Password. Try Again!");
@@ -60,7 +67,128 @@ authMiddleware.User = {
       throw Error.SomethingWentWrong();
     }
   },
+  // distributorLogin: async ({ body }, device) => {
+  //   // if (device.latLong==null||device.latLong==undefined||device.latLong.length==0) {
+  //   //     throw Error.AuthenticationFailed();
+  //   // }
+  //   // console.log("body", body);
+  //   // console.log("body.latLong", body.latLong);
+  //   device.latLong = JSON.stringify(body.latLong);
+  //   const passwordSecret = configs.passwordSecret;
+  //   const userFound = await distributorDbController.Auth.checkemailExists(body);
+  //   // console.log("userFound", userFound);
+  //   if (
+  //     userFound === null ||
+  //     userFound === undefined ||
+  //     Object.keys(userFound).length === 0
+  //   ) {
+  //     //no user available shouldnt be displayed to user
+  //     return "Wrong Email/Password. Try Again!";
+  //   } else if (userFound.status === "terminated") {
+  //     throw Error.AuthenticationFailed("Terminated");
+  //   } else if (userFound.status === "inactive") {
+  //     throw Error.AuthenticationFailed("Account InActive");
+  //   } else if (userFound.type === "USER") {
+  //     throw Error.AuthenticationFailed("Account InActive");
+  //   } else if (userFound.status === "active" && userFound.type === "ROOT") {
+  //     try {
+  //       //decrypt password
 
+  //       const plain = await CryptoJS.AES.decrypt(
+  //         userFound.password,
+  //         passwordSecret
+  //       );
+  //       const decrypted = plain.toString(CryptoJS.enc.Utf8);
+  //       //password matched
+  //       if (decrypted === body.password) {
+  //         //get last session
+  //         const findSession =
+  //           await distributorDbController.Auth.session.findSession(userFound);
+  //         console.log("findSession", findSession);
+  //         if (
+  //           findSession == null ||
+  //           findSession == undefined ||
+  //           Object.keys(findSession).length == 0 ||
+  //           findSession.status === "inactive"
+  //         ) {
+  //           // if session not available,generate new session...!
+  //           const token = await authentications.generateAdminJWT({
+  //             userId: userFound.id,
+  //             status: "active",
+  //             type: "ROOT",
+  //           });
+  //           // console.log("token", token);
+  //           if (token != null && token != undefined) {
+  //             var encryptedToken = CryptoJS.AES.encrypt(
+  //               token,
+  //               passwordSecret
+  //             ).toString();
+  //             console.log("encryptedToken", encryptedToken);
+  //             const addSession =
+  //               await adminDbController.Auth.session.createSession(
+  //                 encryptedToken,
+  //                 device,
+  //                 userFound.id
+  //               );
+  //             console.log("addSession", addSession);
+  //             if (
+  //               addSession != null &&
+  //               addSession != undefined &&
+  //               Object.keys(addSession).length != 0
+  //             ) {
+  //               return { token: encryptedToken };
+  //             } else {
+  //               throw Error.SomethingWentWrong("Failed to Create Session");
+  //             }
+  //           }
+  //         } else if (findSession.status == "active") {
+  //           // if session available,destroy existing and generate new...!
+  //           const destroySession =
+  //             await adminDbController.Auth.session.destroySession(
+  //               findSession.token
+  //             );
+  //           if (destroySession[0] != 0) {
+  //             // "Logout Successful";
+  //             const token = await authentications.generateAdminJWT({
+  //               userId: userFound.id,
+  //               status: "active",
+  //               type: "ROOT",
+  //             });
+  //             if (token != null && token != undefined) {
+  //               var encryptedToken = CryptoJS.AES.encrypt(
+  //                 token,
+  //                 passwordSecret
+  //               ).toString();
+  //               const addSession =
+  //                 await adminDbController.Auth.session.createSession(
+  //                   encryptedToken,
+  //                   device,
+  //                   userFound.id
+  //                 );
+  //               if (addSession != null && addSession != undefined) {
+  //                 return { token: encryptedToken };
+  //               } else {
+  //                 throw Error.SomethingWentWrong("Failed to Create Session");
+  //               }
+  //             }
+  //             // else {
+  //             //     throw Error.SomethingWentWrong("fsdffwhgsvfev");
+  //             // }
+  //           }
+  //         } else {
+  //           throw Error.AuthenticationFailed("Session Timed Out");
+  //         }
+  //       } else {
+  //         return "Wrong Email/Password. Try Again!";
+  //       }
+  //     } catch (error) {
+  //       console.log("bala");
+  //       throw Error.SomethingWentWrong("Server Error");
+  //     }
+  //   } else {
+  //     throw Error.SomethingWentWrong("Try Again Later");
+  //   }
+  // },
   forgotPassword: async ({ body }) => {
     const userFound = await distributorDbController.Auth.checkemailExists(body);
     if (

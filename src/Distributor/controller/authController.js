@@ -13,7 +13,7 @@ export const emailLogin = async (req, res) => {
   const ipv = req.socket.remoteAddress;
   const browser = req.get("User-Agent");
   const deviceInfo = { ip: ipv4, ipv: ipv, userAgent: browser };
-  authMiddleware.User.email_login(req, deviceInfo)
+  authMiddleware.User.distributorLogin(req, deviceInfo)
     .then((data) => {
       const response = ApplicationResult.forCreated();
       var statuscode = 0;

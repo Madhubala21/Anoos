@@ -61,7 +61,10 @@ export const dbSync = async () => {
 
   //Create Db Models
 
-  await connection.sync({ force: false });
+  // await connection.sync({ force: false });
+  await connection.sync({ force: false }).catch((c) => {
+    console.log(c);
+  });
 
   //Insert Default Db values
   // await devDbController.defaultUsers.configuration(rootuser.configuration);

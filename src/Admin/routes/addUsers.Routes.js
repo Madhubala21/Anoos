@@ -6,7 +6,7 @@ const addUsersRouter = Router();
 
 //Distributors
 
-addUsersRouter.get(
+addUsersRouter.post(
   "/viewDistributor",
   adminAuthenticate,
   allUsersController.Users.viewDistributor
