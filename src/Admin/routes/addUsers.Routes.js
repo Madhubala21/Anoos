@@ -26,7 +26,7 @@ addUsersRouter.post(
 
 //Production
 
-addUsersRouter.get(
+addUsersRouter.post(
   "/viewProduction",
   adminAuthenticate,
   allUsersController.Users.viewProduction

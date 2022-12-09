@@ -4,8 +4,13 @@ import {
   Forgot,
   verifyCode,
   logout,
+  viewDistributorProfile,
+  DistributorAuthenticate,
+  updateDistributorProfile,
 } from "../controller/authController.js";
 import require from "requirejs";
+import { distributorAuthentication } from "../../core/database/models/distributorModel.js";
+import { viewProfile } from "../../Admin/controller/auth.Controller.js";
 const rateLimit = require("express-rate-limit");
 const msg = {
   message: "Oops...! Limit Exceeded, Kindly Try Again after 60mins.",
@@ -21,6 +26,20 @@ const authRouter = Router();
 
 //login
 authRouter.post("/login", emailLogin);
+
+//view profile
+authRouter.get(
+  "/viewDistributor",
+  DistributorAuthenticate,
+  viewDistributorProfile
+);
+
+//update profile
+authRouter.post(
+  "/updateDistributor",
+  DistributorAuthenticate,
+  updateDistributorProfile
+);
 
 //logout
 authRouter.post("/logout", logout);

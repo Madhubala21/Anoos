@@ -13,7 +13,7 @@ export const emailLogin = async (req, res) => {
   const ipv = req.socket.remoteAddress;
   const browser = req.get("User-Agent");
   const deviceInfo = { ip: ipv4, ipv: ipv, userAgent: browser };
-  authMiddleware.User.email_login(req, deviceInfo)
+  authMiddleware.User.productionLogin(req, deviceInfo)
     .then((data) => {
       const response = ApplicationResult.forCreated();
       var statuscode = 0;
@@ -31,10 +31,43 @@ export const emailLogin = async (req, res) => {
     });
 };
 
-/**
- * @name logout user
- * @param {*} body
- */
+export const viewProductionProfile = async (req, res) => {
+  authMiddleware.User.viewProductionProfile(req)
+    .then((data) => {
+      const response = ApplicationResult.forCreated();
+      var statuscode = 0;
+      ApplicationResponse.success(
+        response,
+        null,
+        (response) => (statuscode = response.status)
+      );
+      res.json({ status: statuscode, data: data });
+    })
+    .catch((error) => {
+      ApplicationResponse.error(error, null, (response) => {
+        res.status(response.status).json(response);
+      });
+    });
+};
+
+export const updateProductionProfile = async (req, res) => {
+  authMiddleware.User.updateProductionProfile(req)
+    .then((data) => {
+      const response = ApplicationResult.forCreated();
+      var statuscode = 0;
+      ApplicationResponse.success(
+        response,
+        null,
+        (response) => (statuscode = response.status)
+      );
+      res.json({ status: statuscode, data: data });
+    })
+    .catch((error) => {
+      ApplicationResponse.error(error, null, (response) => {
+        res.status(response.status).json(response);
+      });
+    });
+};
 
 export const logout = async (req, res) => {
   authMiddleware.User.signOut(req)

@@ -250,6 +250,9 @@ const store = {
     paymentMethod: {
       $ref: "defs#/definitions/store/paymentMethod",
     },
+    status: {
+      $ref: "defs#/definitions/store/status",
+    },
   },
 };
 
@@ -419,7 +422,7 @@ export const storeCreate = {
     paymentMethod: store.properties.paymentMethod,
   },
   required: [
-    "image",
+    // "image",
     "name",
     "streetName",
     "city",
@@ -443,7 +446,7 @@ export const orderCreate = {
     amount: order.properties.amount,
     orderStatus: order.properties.orderStatus,
   },
-  required: ["producctName", "quantity", "amount", "orderStatus"],
+  required: ["productName", "quantity", "amount"],
 };
 
 export const expenseCreate = {

@@ -18,7 +18,6 @@ distributor.init(
     },
     email: {
       type: DataTypes.STRING(255),
-      unique: true,
       allowNull: false,
     },
     phone: {
@@ -35,10 +34,8 @@ distributor.init(
       defaultValue: "inactive",
     },
     type: {
-      type: DataTypes.ENUM("ROOT", "USER"),
+      type: DataTypes.ENUM("ROOT", "DISTRIBUTOR", "PRODUCTION"),
       allowNull: false,
-      unique: true,
-      defaultValue: "USER",
     },
   },
   { sequelize: connection, freezeTableName: true }
@@ -121,8 +118,13 @@ store.init(
       allowNull: false,
     },
     paymentMethod: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("billtobill", "cod", "split"),
       allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM("active", "inactive", "terminated"),
+      allowNull: false,
+      defaultValue: "active",
     },
   },
   { sequelize: connection, freezeTableName: true }

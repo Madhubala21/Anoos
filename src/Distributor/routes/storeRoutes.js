@@ -15,11 +15,13 @@ storeRouter.get(
 storeRouter.post(
   "/addStore",
   DistributorAuthenticate,
+  Resizer,
   storeController.Store.addStore
 );
 storeRouter.post(
   "/updateStore",
   DistributorAuthenticate,
+  Resizer,
   storeController.Store.updateStore
 );
 storeRouter.post(

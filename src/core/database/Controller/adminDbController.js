@@ -1,5 +1,6 @@
 import express from "express";
 import { connection } from "../connection.js";
+
 import * as Models from "../models/index.js";
 import require from "requirejs";
 const { Op, Sequelize, where } = require("sequelize");
@@ -243,7 +244,6 @@ adminDbController.Admin = {
           email: data.email,
           phone: data.phone,
           password: data.password,
-          status: "inactive",
           type: "ROOT",
         },
         { raw: true }
@@ -263,7 +263,14 @@ adminDbController.Admin = {
             status: "active",
           },
           attributes: {
-            exclude: ["id", "createdAt", "updatedAt", "status", "type"],
+            exclude: [
+              "id",
+              "createdAt",
+              "updatedAt",
+              "status",
+              "type",
+              "password",
+            ],
           },
         },
         { raw: true }
@@ -281,9 +288,17 @@ adminDbController.Users = {
       return await adminDbController.Models.distributor.findOne({
         where: {
           id: data.id,
+          status: "active",
         },
         attributes: {
-          exclude: ["id", "type", "createdAt", "updatedAt"],
+          exclude: [
+            "id",
+            "type",
+            "createdAt",
+            "updatedAt",
+            "status",
+            "password",
+          ],
         },
       });
     } catch (error) {
@@ -315,6 +330,7 @@ adminDbController.Users = {
           email: data.email,
           phone: data.phone,
           password: data.password,
+          type: "DISTRIBUTOR",
         },
         { raw: true }
       );
@@ -326,7 +342,7 @@ adminDbController.Users = {
 
   deleteDistributor: async (data) => {
     try {
-      return await adminDbController.Models.faq.findAll({
+      return await adminDbController.Models.distributor.findAll({
         where: {
           status: "active",
         },
@@ -337,46 +353,63 @@ adminDbController.Users = {
     }
   },
 
-  getProduction: async () => {
+  getProduction: async (data) => {
     try {
-      return await adminDbController.Models.banner.findAll({
-        order: [["bannerType", "ASC"]],
-        raw: true,
-        attributes: ["id", "bannerImage", "bannerType", "status"],
+      return await adminDbController.Models.production.findOne({
+        where: {
+          [Op.or]: {
+            email: data.email || null,
+            phone: data.phone || null,
+          },
+        },
       });
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
 
   viewProduction: async (data) => {
     try {
-      return await adminDbController.Models.faq.create(
+      return await adminDbController.Models.production.findOne(
         {
-          title: data.faqTitle,
-          answer: data.faqAnswer,
-          status: "active",
+          where: {
+            id: data.id,
+          },
+          attributes: {
+            exclude: [
+              "id",
+              "type",
+              "createdAt",
+              "updatedAt",
+              "status",
+              "password",
+            ],
+          },
         },
         { raw: true }
       );
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
 
   addProduction: async (data) => {
+    // console.log(data);
     try {
-      return await adminDbController.Models.faq.update(
+      return await adminDbController.Models.production.create(
         {
-          status: data.status,
+          username: data.username,
+          email: data.email,
+          phone: data.phone,
+          password: data.password,
+          type: "PRODUCTION",
         },
-        {
-          where: {
-            id: data.id,
-          },
-        }
+        { raw: true }
       );
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },

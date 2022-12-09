@@ -18,7 +18,6 @@ production.init(
     },
     email: {
       type: DataTypes.STRING(255),
-      unique: true,
       allowNull: false,
     },
     phone: {
@@ -35,10 +34,8 @@ production.init(
       defaultValue: "inactive",
     },
     type: {
-      type: DataTypes.ENUM("ROOT", "USER"),
+      type: DataTypes.ENUM("ROOT", "DISTRIBUTOR", "PRODUCTION"),
       allowNull: false,
-      unique: true,
-      defaultValue: "USER",
     },
   },
   { sequelize: connection, freezeTableName: true }

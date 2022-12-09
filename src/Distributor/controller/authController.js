@@ -31,10 +31,43 @@ export const emailLogin = async (req, res) => {
     });
 };
 
-/**
- * @name logout user
- * @param {*} body
- */
+export const viewDistributorProfile = async (req, res) => {
+  authMiddleware.User.viewDistributorProfile(req)
+    .then((data) => {
+      const response = ApplicationResult.forCreated();
+      var statuscode = 0;
+      ApplicationResponse.success(
+        response,
+        null,
+        (response) => (statuscode = response.status)
+      );
+      res.json({ status: statuscode, data: data });
+    })
+    .catch((error) => {
+      ApplicationResponse.error(error, null, (response) => {
+        res.status(response.status).json(response);
+      });
+    });
+};
+
+export const updateDistributorProfile = async (req, res) => {
+  authMiddleware.User.updateDistributorProfile(req)
+    .then((data) => {
+      const response = ApplicationResult.forCreated();
+      var statuscode = 0;
+      ApplicationResponse.success(
+        response,
+        null,
+        (response) => (statuscode = response.status)
+      );
+      res.json({ status: statuscode, data: data });
+    })
+    .catch((error) => {
+      ApplicationResponse.error(error, null, (response) => {
+        res.status(response.status).json(response);
+      });
+    });
+};
 
 export const logout = async (req, res) => {
   authMiddleware.User.signOut(req)

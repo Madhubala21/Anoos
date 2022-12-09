@@ -1,6 +1,8 @@
+import require from "requirejs";
+var CryptoJS = require("crypto-js");
 import { adminDbController } from "../../core/database/Controller/adminDbController.js";
 import * as Error from "../../core/errors/ErrorConstant.js";
-// import { PayloadCompiler } from "../access/PayloadCompiler.js";
+import { PayloadCompiler } from "../../core/inc/access/PayloadCompiler.js";
 
 export class allUsersMiddleware {}
 
@@ -16,25 +18,46 @@ allUsersMiddleware.Users = {
     ) {
       return fetched;
     } else {
-      return "No Users Found";
+      return "User not found";
     }
   },
   addDistributor: async ({ body }) => {
+    const passwordSecret = configs.passwordSecret;
     const fetchDistributor = await adminDbController.Users.getDistributor(body);
+
     if (
       fetchDistributor != null &&
       fetchDistributor != undefined &&
       Object.keys(fetchDistributor).length != 0
     ) {
-      return "Distributor already exists";
-    } else {
-      const fetched = await adminDbController.Users.addDistributor(body);
       if (
-        fetched != null &&
-        fetched != undefined &&
-        Object.keys(fetched).length != 0
+        fetchDistributor.status === "inactive" ||
+        fetchDistributor.status === "terminated"
       ) {
-        return "Added successfully";
+        return "Distributor already exists account inactive or terminated";
+      } else {
+        return "Distributor already exists";
+      }
+    } else {
+      body.password = CryptoJS.AES.encrypt(
+        body.password,
+        passwordSecret
+      ).toString();
+      // schema
+      const validated = await PayloadCompiler.compile(
+        body,
+        "distributorCreate"
+      );
+
+      const adminCreated = await adminDbController.Users.addDistributor(
+        validated.data
+      );
+      if (
+        adminCreated != null &&
+        adminCreated != undefined &&
+        Object.keys(adminCreated).length != 0
+      ) {
+        return "Account Created";
       } else {
         return "Error";
       }
@@ -49,10 +72,10 @@ allUsersMiddleware.Users = {
     }
   },
 
-  //Production
+  //DisaddDistributor
 
-  viewProduction: async () => {
-    const fetched = await adminDbController.Users.viewProduction();
+  viewProduction: async ({ body }) => {
+    const fetched = await adminDbController.Users.viewProduction(body);
     if (
       fetched != null &&
       fetched != undefined &&
@@ -60,20 +83,47 @@ allUsersMiddleware.Users = {
     ) {
       return fetched;
     } else {
-      return "No Users Found";
+      return "User not found";
     }
   },
   addProduction: async ({ body }) => {
-    const fetchOrder = await adminDbController.Users.getProduction(body);
-    fetchOrder.cartId = JSON.parse(fetchOrder.cartId);
-    fetchOrder.customerId = fetchOrder.customerId;
-    fetchOrder.shippingAddress = fetchOrder.shippingAddres;
+    const passwordSecret = configs.passwordSecret;
+    const fetchProduction = await adminDbController.Users.getProduction(body);
 
-    const fetchCart = await adminDbController.Users.addProduction(
-      fetchOrder.cartId
-    );
+    if (
+      fetchProduction != null &&
+      fetchProduction != undefined &&
+      Object.keys(fetchProduction).length != 0
+    ) {
+      if (
+        fetchProduction.status === "inactive" ||
+        fetchProduction.status === "terminated"
+      ) {
+        return "Production already exists account inactive or terminated";
+      } else {
+        return "Production already exists";
+      }
+    } else {
+      body.password = CryptoJS.AES.encrypt(
+        body.password,
+        passwordSecret
+      ).toString();
+      // schema
+      const validated = await PayloadCompiler.compile(body, "productionCreate");
 
-    return fetchCart;
+      const adminCreated = await adminDbController.Users.addProduction(
+        validated.data
+      );
+      if (
+        adminCreated != null &&
+        adminCreated != undefined &&
+        Object.keys(adminCreated).length != 0
+      ) {
+        return "Account Created";
+      } else {
+        return "Error";
+      }
+    }
   },
   deleteProduction: async ({ body }) => {
     const updated = await adminDbController.Users.deleteProduction(body);

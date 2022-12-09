@@ -12,12 +12,7 @@ authMiddleware.User = {
     // const validated = await PayloadCompiler.compile(body, "userLogin");
     const userFound = await distributorDbController.Auth.checkemailExists(body);
     const passwordSecret = await configs.passwordSecret;
-    // if (!userFound || Object.keys(userFound).length === 0) {
-    if (
-      userFound === null ||
-      userFound === undefined ||
-      Object.keys(userFound).length === 0
-    ) {
+    if (!userFound || Object.keys(userFound).length === 0) {
       //no user available shouldnt be displayed to user
       throw Error.SomethingWentWrong("Wrong Email/Password. Try Again!");
     } else if (userFound.status === "terminated") {
@@ -27,15 +22,14 @@ authMiddleware.User = {
       throw Error.SomethingWentWrong("Account InActive");
     } else if (userFound.status === "active") {
       try {
-        const plain = await CryptoJS.AES.decrypt(
-          userFound.password,
-          passwordSecret
-        );
+        const plain = CryptoJS.AES.decrypt(userFound.password, passwordSecret);
+        console.log("plain", plain);
         const decrypted = plain.toString(CryptoJS.enc.Utf8);
-        console.log("decrypted", decrypted);
+        console.log("decrypted is", decrypted);
         if (decrypted === body.password) {
           const token = await authentications.generateUserJWT({
             userId: userFound.id,
+            type: userFound.type,
             status: "active",
           });
           if (token) {
@@ -48,7 +42,6 @@ authMiddleware.User = {
                 encryptedToken,
                 device
               );
-
             if (addSession != null && addSession != undefined) {
               return { token: encryptedToken };
             } else {
@@ -58,13 +51,14 @@ authMiddleware.User = {
             throw Error.SomethingWentWrong();
           }
         } else {
-          throw Error.SomethingWentWrong("Wrong Email/Password.Try Again!");
+          throw Error.SomethingWentWrong("Wrong Email/Password. Try Again!");
         }
       } catch (error) {
+        // console.log(error);
         throw Error.SomethingWentWrong("Wrong Email/Password. Try Again!");
       }
     } else {
-      throw Error.SomethingWentWrong();
+      throw Error.SomethingWentWrong("Try again later");
     }
   },
   // distributorLogin: async ({ body }, device) => {
@@ -332,9 +326,8 @@ authMiddleware.User = {
       //check authentication
       const findSession =
         await distributorDbController.Auth.session.findSession(
-          headers.authtoken
+          headers.distributortoken
         );
-
       if (
         findSession != null &&
         findSession != undefined &&
@@ -348,14 +341,15 @@ authMiddleware.User = {
         findSession.token = plain.toString(CryptoJS.enc.Utf8);
 
         const decoded = await authentications.verifyUserJWT(findSession.token);
-
         if (
           decoded != null &&
           decoded != undefined &&
           decoded.status == "active"
         ) {
+          // console.log("decoded", decoded);
           const foundUser =
-            await distributorDbController.Customer.checkUserExists(decoded);
+            await distributorDbController.Auth.checkUserExistsDecode(decoded);
+          // console.log("foundUser", foundUser);
           // !=null && !=undefned - true
           if (
             foundUser != null &&
@@ -375,6 +369,28 @@ authMiddleware.User = {
     }
     if (isMalicious) {
       return false;
+    }
+  },
+
+  viewDistributorProfile: async ({ token }) => {
+    // console.log("token", token);
+    const accoundFound =
+      await distributorDbController.Auth.viewDistributorProfile(token);
+    if (accoundFound != null && accoundFound != undefined) {
+      return accoundFound;
+    } else {
+      return "Data not found";
+    }
+  },
+
+  updateDistributorProfile: async ({ body, token }) => {
+    // console.log("token", token);
+    const accoundFound =
+      await distributorDbController.Auth.updateDistributorProfile(body, token);
+    if (accoundFound != null && accoundFound != undefined) {
+      return accoundFound;
+    } else {
+      return "Data not found";
     }
   },
 };

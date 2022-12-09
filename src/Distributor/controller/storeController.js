@@ -25,6 +25,7 @@ storeController.Store = {
   },
 
   addStore: async (req, res) => {
+    // console.log("req", req);
     storeMiddleware.Store.addStore(req)
       .then((data) => {
         const response = ApplicationResult.forCreated();

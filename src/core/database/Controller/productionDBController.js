@@ -24,6 +24,19 @@ productionDbController.Auth = {
       throw Error.SomethingWentWrong();
     }
   },
+  checkUserExistsDecode: async (data) => {
+    try {
+      return await productionDbController.Models.production.findOne({
+        where: {
+          id: data.userId,
+          type: "PRODUCTION",
+        },
+        raw: true,
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
   checkUserExists: async (data) => {
     try {
       return await productionDbController.Models.production.findOne({
@@ -37,6 +50,53 @@ productionDbController.Auth = {
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
+    }
+  },
+  updateProductionProfile: async (data, token) => {
+    // console.log("data", data);
+    // console.log("token", token);
+    try {
+      const updated = await productionDbController.Models.production.update(
+        {
+          username: data.username,
+        },
+        {
+          where: {
+            id: token,
+            status: "active",
+          },
+        }
+      );
+      if (updated[0] != 0) {
+        return "Updated successfully";
+      } else {
+        return "Error in update";
+      }
+    } catch (error) {
+      console.log(error);
+      throw Error.SomethingWentWrong();
+    }
+  },
+  viewProductionProfile: async (token) => {
+    try {
+      return await productionDbController.Models.production.findOne({
+        where: {
+          id: token,
+          status: "active",
+        },
+        attributes: {
+          exclude: [
+            "id",
+            "createdAt",
+            "updatedAt",
+            "status",
+            "type",
+            "password",
+          ],
+        },
+      });
+    } catch (error) {
+      return null;
     }
   },
   createUid: async (data) => {

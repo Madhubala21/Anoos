@@ -17,6 +17,19 @@ distributorDbController.defaults = {};
 
 //user checkexists
 distributorDbController.Auth = {
+  checkUserExistsDecode: async (data) => {
+    try {
+      return await distributorDbController.Models.distributor.findOne({
+        where: {
+          id: data.userId,
+          type: data.type,
+        },
+        raw: true,
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
   checkemailExists: async (data) => {
     try {
       return await distributorDbController.Models.distributor.findOne({
@@ -44,6 +57,30 @@ distributorDbController.Auth = {
       throw Error.SomethingWentWrong();
     }
   },
+  viewDistributorProfile: async (token) => {
+    try {
+      return await distributorDbController.Models.distributor.findOne({
+        where: {
+          id: token,
+          status: "active",
+        },
+        attributes: {
+          exclude: [
+            "id",
+            "status",
+            "createdAt",
+            "updatedAt",
+            "password",
+            "type",
+          ],
+        },
+        raw: true,
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
   createUid: async (data) => {
     try {
       const updated_data =
@@ -102,6 +139,32 @@ distributorDbController.Auth = {
       throw Error.SomethingWentWrong();
     }
   },
+  updateDistributorProfile: async (data, token) => {
+    // console.log("data", data);
+    // console.log("token", token);
+    try {
+      const updated = await distributorDbController.Models.distributor.update(
+        {
+          username: data.username,
+        },
+        {
+          where: {
+            id: token,
+            status: "active",
+          },
+        }
+      );
+      // console.log("updated", updated);
+      if (updated[0] != 0) {
+        return "Updated successfully";
+      } else {
+        return "Error in update";
+      }
+    } catch (error) {
+      console.log(error);
+      throw Error.SomethingWentWrong();
+    }
+  },
   session: {
     createSession: async (token, device) => {
       try {
@@ -146,52 +209,106 @@ distributorDbController.Auth = {
 };
 
 distributorDbController.Store = {
-  getStore: async (tokenId) => {
+  getStore: async (data) => {
     try {
-      return await distributorDbController.Models.wishlist.findAll({
+      return await distributorDbController.Models.store.findOne({
         where: {
-          distributorId: tokenId,
+          id: data.id,
+          status: "active",
+        },
+        attributes: {
+          exclude: ["id", "createdAt", "updatedAt", "status"],
         },
         raw: true,
       });
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
-  addStore: async (data, tokenId) => {
+  getStoreExists: async (data) => {
+    // console.log("data", data);
     try {
-      return await distributorDbController.Models.wishlist.findOne({
+      return await distributorDbController.Models.store.findOne({
         where: {
-          customerId: tokenId,
-          productId: data.productId,
+          doorNumber: data.doorNumber,
         },
         raw: true,
       });
     } catch (error) {
+      console.log(error);
+      throw Error.SomethingWentWrong();
+    }
+  },
+  addStore: async (data, image) => {
+    try {
+      return await distributorDbController.Models.store.create({
+        image: image,
+        name: data.name,
+        streetName: data.streetName,
+        city: data.city,
+        districtName: data.districtName,
+        phone: data.phone,
+        email: data.email,
+        gstNumber: data.gstNumber,
+        doorNumber: data.doorNumber,
+        pincode: data.pincode,
+        paymentMethod: data.paymentMethod,
+      });
+    } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
 
-  updateStore: async (data, tokenId) => {
+  updateStore: async (data, image) => {
     try {
-      return await distributorDbController.Models.wishlist.create({
-        customerId: tokenId,
-        productId: data.productId,
-      });
+      const update = await distributorDbController.Models.store.update(
+        {
+          image: image || data.image,
+          name: data.name,
+          streetName: data.streetName,
+          city: data.city,
+          districtName: data.districtName,
+          gstNumber: data.gstNumber,
+          doorNumber: data.doorNumber,
+          pincode: data.pincode,
+          paymentMethod: data.paymentMethod,
+        },
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
+      if (update[0] != 0) {
+        return "Updated successfully";
+      } else {
+        return "Not updated";
+      }
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
 
   deleteStore: async (data) => {
     try {
-      return await distributorDbController.Models.wishlist.destroy({
-        where: {
-          productId: data.productId,
-          customerId: data.customerId,
-          id: data.id,
+      const update = await distributorDbController.Models.store.update(
+        {
+          status: "inactive",
         },
-      });
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
+      if (update[0] != 0) {
+        return "Store deleted successfully";
+      } else {
+        return "Not deleted";
+      }
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
@@ -199,11 +316,27 @@ distributorDbController.Store = {
 };
 
 distributorDbController.Order = {
-  getOrder: async (tokenId) => {
+  getOrder: async (data) => {
     try {
-      return await distributorDbController.Models.wishlist.findAll({
+      return await distributorDbController.Models.order.findOne({
         where: {
-          customerId: tokenId,
+          id: data.id,
+        },
+        attributes: {
+          exclude: ["id", "createdAt", "updatedAt"],
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+  getOrderExists: async (data) => {
+    try {
+      return await distributorDbController.Models.order.findOne({
+        where: {
+          productName: data.productName,
+          quantity: data.quantity,
+          amount: data.amount,
         },
         raw: true,
       });
@@ -211,14 +344,12 @@ distributorDbController.Order = {
       throw Error.SomethingWentWrong();
     }
   },
-  addOrder: async (data, tokenId) => {
+  addOrder: async (data) => {
     try {
-      return await distributorDbController.Models.wishlist.findOne({
-        where: {
-          customerId: tokenId,
-          productId: data.productId,
-        },
-        raw: true,
+      return await distributorDbController.Models.order.create({
+        productName: data.productName,
+        quantity: data.quantity,
+        amount: data.amount,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -227,7 +358,7 @@ distributorDbController.Order = {
 
   updateOrder: async (data, tokenId) => {
     try {
-      return await distributorDbController.Models.wishlist.create({
+      return await distributorDbController.Models.order.create({
         customerId: tokenId,
         productId: data.productId,
       });
@@ -238,7 +369,7 @@ distributorDbController.Order = {
 
   deleteOrder: async (data) => {
     try {
-      return await distributorDbController.Models.wishlist.destroy({
+      return await distributorDbController.Models.order.destroy({
         where: {
           productId: data.productId,
           customerId: data.customerId,

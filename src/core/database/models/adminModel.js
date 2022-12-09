@@ -35,10 +35,8 @@ admin.init(
       defaultValue: "inactive",
     },
     type: {
-      type: DataTypes.ENUM("ROOT", "USER"),
+      type: DataTypes.ENUM("ROOT", "DISTRIBUTOR", "PRODUCTION"),
       allowNull: false,
-      unique: true,
-      defaultValue: "ROOT",
     },
   },
   { sequelize: connection, freezeTableName: true }

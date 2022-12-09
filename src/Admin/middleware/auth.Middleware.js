@@ -141,7 +141,14 @@ authMiddleware.Admin = {
       accoundFound != undefined &&
       Object.keys(accoundFound).length != 0
     ) {
-      throw Error.AuthenticationFailed("Already Exists");
+      if (
+        accoundFound.status === "inactive" ||
+        accoundFound.status === "terminated"
+      ) {
+        return "Admin already exists account inactive or terminated";
+      } else {
+        return "Admin already exists";
+      }
     } else {
       body.password = CryptoJS.AES.encrypt(
         body.password,

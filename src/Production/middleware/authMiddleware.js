@@ -9,11 +9,9 @@ import { productionDbController } from "../../core/database/Controller/productio
 export class authMiddleware {}
 
 authMiddleware.User = {
-  email_login: async ({ body }, device) => {
-    const validated = await PayloadCompiler.compile(body, "userLogin");
-    const userFound = await productionDbController.Auth.checkemailExists(
-      validated.data
-    );
+  productionLogin: async ({ body }, device) => {
+    // const validated = await PayloadCompiler.compile(body, "userLogin");
+    const userFound = await productionDbController.Auth.checkemailExists(body);
     const passwordSecret = await configs.passwordSecret;
     if (!userFound || Object.keys(userFound).length === 0) {
       //no user available shouldnt be displayed to user
@@ -26,10 +24,13 @@ authMiddleware.User = {
     } else if (userFound.status === "active") {
       try {
         const plain = CryptoJS.AES.decrypt(userFound.password, passwordSecret);
+        // console.log("plain", plain);
         const decrypted = plain.toString(CryptoJS.enc.Utf8);
+        // console.log("decrypted is", decrypted);
         if (decrypted === body.password) {
           const token = await authentications.generateUserJWT({
             userId: userFound.id,
+            type: userFound.type,
             status: "active",
           });
           if (token) {
@@ -54,10 +55,11 @@ authMiddleware.User = {
           throw Error.SomethingWentWrong("Wrong Email/Password. Try Again!");
         }
       } catch (error) {
+        // console.log(error);
         throw Error.SomethingWentWrong("Wrong Email/Password. Try Again!");
       }
     } else {
-      throw Error.SomethingWentWrong();
+      throw Error.SomethingWentWrong("Try again later");
     }
   },
 
@@ -203,7 +205,7 @@ authMiddleware.User = {
     if (headers.hasOwnProperty("productiontoken")) {
       //check authentication
       const findSession = await productionDbController.Auth.session.findSession(
-        headers.authtoken
+        headers.productiontoken
       );
 
       if (
@@ -226,8 +228,9 @@ authMiddleware.User = {
           decoded.status == "active"
         ) {
           const foundUser =
-            await productionDbController.Customer.checkUserExists(decoded);
+            await productionDbController.Auth.checkUserExistsDecode(decoded);
           // !=null && !=undefned - true
+          // console.log("foundUser", foundUser);
           if (
             foundUser != null &&
             foundUser != undefined &&
@@ -246,6 +249,26 @@ authMiddleware.User = {
     }
     if (isMalicious) {
       return false;
+    }
+  },
+  viewProductionProfile: async ({ token }) => {
+    // console.log("token", token);
+    const accoundFound =
+      await productionDbController.Auth.viewProductionProfile(token);
+    if (accoundFound != null && accoundFound != undefined) {
+      return accoundFound;
+    } else {
+      return "Data not found";
+    }
+  },
+  updateProductionProfile: async ({ body, token }) => {
+    // console.log("token", token);
+    const accoundFound =
+      await productionDbController.Auth.updateProductionProfile(body, token);
+    if (accoundFound != null && accoundFound != undefined) {
+      return accoundFound;
+    } else {
+      return "Data not found";
     }
   },
 };
