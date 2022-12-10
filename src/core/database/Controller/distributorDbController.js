@@ -231,7 +231,9 @@ distributorDbController.Store = {
     try {
       return await distributorDbController.Models.store.findOne({
         where: {
+          streetName: data.streetName,
           doorNumber: data.doorNumber,
+          city: data.city,
         },
         raw: true,
       });
@@ -262,6 +264,8 @@ distributorDbController.Store = {
   },
 
   updateStore: async (data, image) => {
+    console.log("data", data);
+    console.log("image", image);
     try {
       const update = await distributorDbController.Models.store.update(
         {
@@ -321,9 +325,10 @@ distributorDbController.Order = {
       return await distributorDbController.Models.order.findOne({
         where: {
           id: data.id,
+          status: "active",
         },
         attributes: {
-          exclude: ["id", "createdAt", "updatedAt"],
+          exclude: ["id", "createdAt", "updatedAt", "status"],
         },
       });
     } catch (error) {
@@ -356,12 +361,26 @@ distributorDbController.Order = {
     }
   },
 
-  updateOrder: async (data, tokenId) => {
+  updateOrder: async (data) => {
     try {
-      return await distributorDbController.Models.order.create({
-        customerId: tokenId,
-        productId: data.productId,
-      });
+      const update = await distributorDbController.Models.order.update(
+        {
+          productName: data.productName,
+          quantity: data.quantity,
+          amount: data.amount,
+          orderStatus: data.orderStatus,
+        },
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
+      if (update[0] != 0) {
+        return "Order updated successfully";
+      } else {
+        return "Not deleted";
+      }
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
@@ -369,13 +388,21 @@ distributorDbController.Order = {
 
   deleteOrder: async (data) => {
     try {
-      return await distributorDbController.Models.order.destroy({
-        where: {
-          productId: data.productId,
-          customerId: data.customerId,
-          id: data.id,
+      const update = await distributorDbController.Models.order.update(
+        {
+          status: "inactive",
         },
-      });
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
+      if (update[0] != 0) {
+        return "Order deleted successfully";
+      } else {
+        return "Not deleted";
+      }
     } catch (error) {
       throw Error.SomethingWentWrong();
     }

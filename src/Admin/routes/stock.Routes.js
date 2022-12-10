@@ -6,6 +6,12 @@ const stockRouter = Router();
 
 stockRouter.get("/getStock", adminAuthenticate, stockController.Stock.getStock);
 
+stockRouter.get(
+  "/viewAllStock",
+  adminAuthenticate,
+  stockController.Stock.viewAllStock
+);
+
 stockRouter.post(
   "/addStock",
   adminAuthenticate,

@@ -35,7 +35,7 @@
         "enum": ["ROOT", "USER"]
       }
     },
-    
+
     "adminAuth": {
       "authId": {
         "type": "string",
@@ -249,7 +249,7 @@
         "enum": ["ROOT", "USER"]
       }
     },
-    
+
     "productionAuth": {
       "productionId": {
         "type": "string",
@@ -279,7 +279,7 @@
         "type": "string",
         "title": "Id"
       },
-       "image": {
+      "image": {
         "type": "string",
         "title": "image"
       },
@@ -295,7 +295,7 @@
         "type": "string",
         "title": "city"
       },
-     "districtName": {
+      "districtName": {
         "type": "string",
         "title": "districtName"
       },
@@ -306,7 +306,7 @@
       "email": {
         "type": "string",
         "title": "email",
-        "format":"email"
+        "format": "email"
       },
       "gstNumber": {
         "type": "string",
@@ -320,14 +320,14 @@
         "type": "string",
         "title": "pincode"
       },
-      "paymentMethod":{
-        "type":"string",
-        "title":"payment method",
-        "enum": ["bill to bill", "cod","split"]
+      "paymentMethod": {
+        "type": "string",
+        "title": "payment method",
+        "enum": ["bill to bill", "cod", "split"]
       }
     },
 
-    "order":{
+    "order": {
       "orderId": {
         "type": "string",
         "title": "Id"
@@ -347,11 +347,16 @@
       "orderStatus": {
         "type": "string",
         "title": "orderStatus",
-        "enum": ["notTaken","processing", "prepared"]
+        "enum": ["notTaken", "processing", "prepared"]
+      },
+      "status": {
+        "type": "string",
+        "title": "Account Status",
+        "enum": ["active", "inactive", "terminated"]
       }
     },
 
-    "expense":{
+    "expense": {
       "expenseId": {
         "type": "string",
         "title": "Id"
@@ -377,39 +382,44 @@
         "title": "others"
       }
     },
-  
-    "delivery":{
-    "deliveryId": {
-      "type": "string",
-      "title": "Id"
-    },
-    "productName": {
-      "type": "string",
-      "title": "productName"
-    },
-    "quantity": {
-      "type": "number",
-      "title": "quantity"
-    },
-    "price": {
-      "type": "number",
-      "title": "price"
-    }
+
+    "delivery": {
+      "deliveryId": {
+        "type": "string",
+        "title": "Id"
+      },
+      "productName": {
+        "type": "string",
+        "title": "productName"
+      },
+      "quantity": {
+        "type": "number",
+        "title": "quantity"
+      },
+      "price": {
+        "type": "number",
+        "title": "price"
+      }
     },
 
-    "stock":{
-    "stockId": {
-      "type": "string",
-      "title": "Id"
-    },
-    "stockName": {
-      "type": "string",
-      "title": "stockName"
-    },
-    "quantity": {
-      "type": "number",
-      "title": "quantity"
+    "stock": {
+      "stockId": {
+        "type": "string",
+        "title": "Id"
+      },
+      "stockName": {
+        "type": "string",
+        "title": "stockName"
+      },
+      "quantity": {
+        "type": "number",
+        "title": "quantity"
+      },
+      "status": {
+        "type": "string",
+        "title": "Account Status",
+        "enum": ["active", "inactive", "terminated"]
+      }
     }
-    }
-}
+  }
 }

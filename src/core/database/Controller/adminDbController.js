@@ -342,12 +342,21 @@ adminDbController.Users = {
 
   deleteDistributor: async (data) => {
     try {
-      return await adminDbController.Models.distributor.findAll({
-        where: {
-          status: "active",
+      const update = await adminDbController.Models.distributor.update(
+        {
+          status: "inactive",
         },
-        raw: true,
-      });
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
+      if (update[0] != 0) {
+        return "Deleted successfully";
+      } else {
+        return "Not updated";
+      }
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
@@ -490,36 +499,55 @@ adminDbController.Orders = {
 };
 
 adminDbController.Stock = {
-  checkStockExists: async () => {
+  checkStockExists: async (data) => {
     try {
-      return await adminDbController.Models.banner.findAll({
-        order: [["bannerType", "ASC"]],
-        raw: true,
-        attributes: ["id", "bannerImage", "bannerType", "status"],
+      return await adminDbController.Models.stock.findOne({
+        where: {
+          stockName: data.stockName,
+          status: "active",
+        },
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
 
-  getStock: async () => {
+  getStock: async (data) => {
     try {
-      return await adminDbController.Models.banner.findAll({
-        order: [["bannerType", "ASC"]],
-        raw: true,
-        attributes: ["id", "bannerImage", "bannerType", "status"],
+      return await adminDbController.Models.stock.findOne({
+        where: {
+          id: data.id,
+          status: "active",
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "status"],
+        },
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
 
-  addStock: async () => {
+  viewAllStock: async (data) => {
     try {
-      return await adminDbController.Models.banner.findAll({
-        order: [["bannerType", "ASC"]],
-        raw: true,
-        attributes: ["id", "bannerImage", "bannerType", "status"],
+      return await adminDbController.Models.stock.findAll({
+        where: {
+          status: "active",
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "status"],
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  addStock: async (data) => {
+    try {
+      return await adminDbController.Models.stock.create({
+        stockName: data.stockName,
+        quantity: data.quantity,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -528,17 +556,22 @@ adminDbController.Stock = {
 
   editStock: async (data) => {
     try {
-      return await adminDbController.Models.banner.create(
+      const updated = await adminDbController.Models.stock.update(
         {
-          bannerImage: data.bannerImage,
-          // bannerText: data.bannerText,
-          bannerType: data.bannerType,
-          // bannerFor: data.bannerFor,
-          // productOrCategoryId: data.productOrCategoryId,
-          status: "active",
+          stockName: data.stockName,
+          quantity: data.quantity,
         },
-        { raw: true }
+        {
+          where: {
+            id: data.id,
+          },
+        }
       );
+      if (updated[0] != 0) {
+        return "Updated successfully";
+      } else {
+        return "Error in update";
+      }
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
@@ -546,12 +579,107 @@ adminDbController.Stock = {
 
   deleteStock: async (data) => {
     try {
-      return await adminDbController.Models.faq.findAll({
+      const updated = await adminDbController.Models.stock.update(
+        {
+          status: "inactive",
+        },
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
+      if (updated[0] != 0) {
+        return "Updated successfully";
+      } else {
+        return "Error in update";
+      }
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+};
+
+adminDbController.Store = {
+  checkStoreExists: async (data) => {
+    try {
+      return await adminDbController.Models.store.findOne({
         where: {
+          stockName: data.stockName,
           status: "active",
         },
-        raw: true,
       });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  getStore: async (data) => {
+    try {
+      return await adminDbController.Models.store.findOne({
+        where: {
+          id: data.id,
+          status: "active",
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "status"],
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  deleteStore: async (data) => {
+    try {
+      const updated = await adminDbController.Models.store.update(
+        {
+          status: "inactive",
+        },
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
+      if (updated[0] != 0) {
+        return "Store deleted successfully";
+      } else {
+        return "Error in update";
+      }
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  updateStore: async (data, image) => {
+    console.log("data", data);
+    try {
+      const updated = await adminDbController.Models.store.update(
+        {
+          image: image || data.image,
+          name: data.name,
+          streetName: data.streetName,
+          city: data.city,
+          districtName: data.districtName,
+          phone: data.phone,
+          email: data.email,
+          gstNumber: data.gstNumber,
+          doorNumber: data.doorNumber,
+          pincode: data.pincode,
+          paymentMethod: data.paymentMethod,
+        },
+        {
+          where: {
+            id: data.id,
+          },
+        }
+      );
+      if (updated[0] != 0) {
+        return "Store updated successfully";
+      } else {
+        return "Error in update";
+      }
     } catch (error) {
       throw Error.SomethingWentWrong();
     }

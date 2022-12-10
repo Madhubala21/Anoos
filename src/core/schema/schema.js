@@ -273,6 +273,9 @@ const order = {
     orderStatus: {
       $ref: "defs#/definitions/order/orderStatus",
     },
+    status: {
+      $ref: "defs#/definitions/order/status",
+    },
   },
 };
 
@@ -326,6 +329,9 @@ const stock = {
     },
     quantity: {
       $ref: "defs#/definitions/stock/quantity",
+    },
+    status: {
+      $ref: "defs#/definitions/stock/status",
     },
   },
 };
@@ -445,6 +451,7 @@ export const orderCreate = {
     quantity: order.properties.quantity,
     amount: order.properties.amount,
     orderStatus: order.properties.orderStatus,
+    status: order.properties.status,
   },
   required: ["productName", "quantity", "amount"],
 };
@@ -482,6 +489,7 @@ export const stockCreate = {
   properties: {
     stockName: stock.properties.stockName,
     quantity: stock.properties.quantity,
+    status: stock.properties.status,
   },
   required: ["stockName", "quantity"],
 };

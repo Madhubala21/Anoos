@@ -199,6 +199,11 @@ stock.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    status: {
+      type: DataTypes.ENUM("active", "inactive", "terminate"),
+      allowNull: false,
+      defaultValue: "active",
+    },
   },
   { sequelize: connection, freezeTableName: true }
 );

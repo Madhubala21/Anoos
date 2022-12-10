@@ -6,8 +6,8 @@ export class stockMiddleware {}
 
 //category
 stockMiddleware.Stock = {
-  getStock: async ({ query }) => {
-    const fetched = await adminDbController.Stock.getStock(query);
+  getStock: async ({ body }) => {
+    const fetched = await adminDbController.Stock.getStock(body);
     if (
       fetched != null &&
       fetched != undefined &&
@@ -15,12 +15,24 @@ stockMiddleware.Stock = {
     ) {
       return fetched;
     } else {
-      return "No Categories Found";
+      return "Stock not found";
     }
   },
 
-  addStock: async ({ body, image }) => {
-    body.categoryImage = image;
+  viewAllStock: async () => {
+    const fetched = await adminDbController.Stock.viewAllStock();
+    if (
+      fetched != null &&
+      fetched != undefined &&
+      Object.keys(fetched).length != 0
+    ) {
+      return fetched;
+    } else {
+      return "Stock not found";
+    }
+  },
+
+  addStock: async ({ body }) => {
     const existingCategory = await adminDbController.Stock.checkStockExists(
       body
     );
@@ -29,7 +41,7 @@ stockMiddleware.Stock = {
       existingCategory != undefined &&
       Object.keys(existingCategory).length != 0
     ) {
-      return "Category Already Exists";
+      return "Stock Already Exists";
     } else {
       const created = await adminDbController.Stock.addStock(body);
       if (
@@ -37,31 +49,32 @@ stockMiddleware.Stock = {
         created != undefined &&
         Object.keys(created) != 0
       ) {
-        return "Category Created Successfully";
+        return "Stock Created Successfully";
       } else {
         throw Error.SomethingWentWrong("Failed to Create Category");
       }
     }
   },
 
-  editStock: async ({ body, image }) => {
+  editStock: async ({ body }) => {
+    const checkStockExists = await adminDbController.Stock.getStock(body);
     if (
-      checkproduct != null &&
-      checkproduct != undefined &&
-      Object.keys(checkproduct).length != 0
+      checkStockExists != null &&
+      checkStockExists != undefined &&
+      Object.keys(checkStockExists).length != 0
     ) {
       const updated = await adminDbController.Stock.editStock(body);
       if (updated[0] != 0) {
-        return "Update Success";
+        return updated;
       } else {
         return "Update Failed";
       }
     } else {
-      return "Update Success";
+      return "Stock not found";
     }
   },
 
-  deleteStock: async ({ body, image }) => {
+  deleteStock: async ({ body }) => {
     body.categoryImage = image;
     const existingCategory = await adminDbController.Stock.checkStockExists(
       body

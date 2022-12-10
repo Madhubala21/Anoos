@@ -29,35 +29,51 @@ orderMiddleware.Order = {
     } else {
       const validated = await PayloadCompiler.compile(data.body, "orderCreate");
       let body = validated.data;
-      console.log(body);
       var fetched = await distributorDbController.Order.addOrder(
         body,
         data.image
       );
       if (fetched != null && fetched != undefined && fetched != 0) {
-        return "Store added successfully";
+        return "Order added successfully";
       } else {
         return "Not added";
       }
     }
   },
 
-  updateOrder: async ({ token }) => {
-    var fetched = await distributorDbController.Order.updateOrder(token);
-    if (fetched != null && fetched != undefined && fetched != 0) {
-      return {
-        count: fetched,
-      };
+  updateOrder: async ({ body }) => {
+    const findOrder = await distributorDbController.Order.getOrder(body);
+    if (
+      findOrder != null &&
+      findOrder != undefined &&
+      Object.keys(findOrder).length != 0
+    ) {
+      var fetched = await distributorDbController.Order.updateOrder(body);
+      if (fetched != null && fetched != undefined && fetched != 0) {
+        return fetched;
+      } else {
+        return "Order not updatedd";
+      }
     } else {
-      return 0;
+      return "Order not found";
     }
   },
 
-  deleteOrder: async ({ body, token }) => {
-    body.customerId = token;
-    var destroyed = await distributorDbController.Order.deleteOrder(body);
-    if (destroyed[0] != 0) {
-      return "Removed From Cart";
+  deleteOrder: async ({ body }) => {
+    const findOrder = await distributorDbController.Order.getOrder(body);
+    if (
+      findOrder != null &&
+      findOrder != undefined &&
+      Object.keys(findOrder).length != 0
+    ) {
+      var fetched = await distributorDbController.Order.deleteOrder(body);
+      if (fetched != null && fetched != undefined && fetched != 0) {
+        return fetched;
+      } else {
+        return "Order deleted";
+      }
+    } else {
+      return "Order not found";
     }
   },
 };

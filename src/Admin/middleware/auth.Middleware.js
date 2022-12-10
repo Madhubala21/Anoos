@@ -45,7 +45,7 @@ authMiddleware.Admin = {
           //get last session
           const findSession =
             await adminDbController.Auth.session.findSessionId(userFound);
-          console.log("findSession", findSession);
+          // console.log("findSession", findSession);
           if (
             findSession == null ||
             findSession == undefined ||

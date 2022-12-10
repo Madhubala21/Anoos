@@ -157,6 +157,11 @@ order.init(
       allowNull: false,
       defaultValue: "notTaken",
     },
+    status: {
+      type: DataTypes.ENUM("active", "inactive", "terminated"),
+      allowNull: false,
+      defaultValue: "active",
+    },
   },
   { sequelize: connection, freezeTableName: true }
 );
