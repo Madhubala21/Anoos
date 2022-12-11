@@ -141,11 +141,24 @@ allUsersMiddleware.Users = {
     }
   },
   deleteProduction: async ({ body }) => {
-    const updated = await adminDbController.Users.deleteProduction(body);
-    if (updated[0] != 0) {
-      return "Order Updated Successfully";
+    const productionExists = await adminDbController.Users.viewProduction(body);
+    if (
+      productionExists != null &&
+      productionExists != undefined &&
+      Object.keys(productionExists).length != 0
+    ) {
+      const fetched = await adminDbController.Users.deleteProduction(body);
+      if (
+        fetched != null &&
+        fetched != undefined &&
+        Object.keys(fetched).length != 0
+      ) {
+        return fetched;
+      } else {
+        return "User not found";
+      }
     } else {
-      throw Error.SomethingWentWrong("Unable to Change Status");
+      return "Distributor not found";
     }
   },
 };

@@ -384,6 +384,7 @@ adminDbController.Users = {
         {
           where: {
             id: data.id,
+            status: "active",
           },
           attributes: {
             exclude: [
@@ -425,16 +426,21 @@ adminDbController.Users = {
 
   deleteProduction: async (data) => {
     try {
-      return await adminDbController.Models.banner.update(
+      const update = await adminDbController.Models.production.update(
         {
-          status: data.status,
+          status: "inactive",
         },
         {
           where: {
-            id: data.bannerId,
+            id: data.id,
           },
         }
       );
+      if (update[0] != 0) {
+        return "Deleted successfully";
+      } else {
+        return "Not updated";
+      }
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
