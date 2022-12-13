@@ -158,7 +158,7 @@ allUsersMiddleware.Users = {
         return "User not found";
       }
     } else {
-      return "Distributor not found";
+      return "Production not found";
     }
   },
 };
