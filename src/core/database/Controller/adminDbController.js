@@ -691,3 +691,87 @@ adminDbController.Store = {
     }
   },
 };
+
+adminDbController.Expense = {
+  checkExpenseExists: async (data) => {
+    try {
+      return await adminDbController.Models.expense.findOne({
+        where: {
+          distributorId: data.id,
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  getExpense: async (data) => {
+    try {
+      return await adminDbController.Models.expense.findOne({
+        where: {
+          distributorId: data.id,
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "status", "id", "distributorId"],
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  // deleteStore: async (data) => {
+  //   try {
+  //     const updated = await adminDbController.Models.store.update(
+  //       {
+  //         status: "inactive",
+  //       },
+  //       {
+  //         where: {
+  //           id: data.id,
+  //         },
+  //       }
+  //     );
+  //     if (updated[0] != 0) {
+  //       return "Store deleted successfully";
+  //     } else {
+  //       return "Error in update";
+  //     }
+  //   } catch (error) {
+  //     throw Error.SomethingWentWrong();
+  //   }
+  // },
+
+  // updateStore: async (data, image) => {
+  //   console.log("data", data);
+  //   try {
+  //     const updated = await adminDbController.Models.store.update(
+  //       {
+  //         image: image || data.image,
+  //         name: data.name,
+  //         streetName: data.streetName,
+  //         city: data.city,
+  //         districtName: data.districtName,
+  //         phone: data.phone,
+  //         email: data.email,
+  //         gstNumber: data.gstNumber,
+  //         doorNumber: data.doorNumber,
+  //         pincode: data.pincode,
+  //         paymentMethod: data.paymentMethod,
+  //       },
+  //       {
+  //         where: {
+  //           id: data.id,
+  //         },
+  //       }
+  //     );
+  //     if (updated[0] != 0) {
+  //       return "Store updated successfully";
+  //     } else {
+  //       return "Error in update";
+  //     }
+  //   } catch (error) {
+  //     throw Error.SomethingWentWrong();
+  //   }
+  // },
+};

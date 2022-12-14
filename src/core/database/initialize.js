@@ -14,38 +14,11 @@ export const dbConnection = async () => {
 //Define DB Model Associations
 
 export const modelAssociations = async () => {
-  // Product
-  // models.product.hasMany(models.productVariants, {
-  //   sourceKey: "id",
-  //   foreignKey: "productId",
-  // });
-  // models.product.hasMany(models.reviews, {
-  //   sourceKey: "id",
-  //   foreignKey: "productId",
-  // });
-  // models.productVariants.hasMany(models.reviews, {
-  //   sourceKey: "id",
-  //   foreignKey: "variantId",
-  // });
-  // models.customer.hasMany(models.reviews, {
-  //   sourceKey: "id",
-  //   foreignKey: "customerId",
-  // });
-  // //cart
-  // models.cart.belongsTo(models.productVariants, {
-  //   sourceKey: "id",
-  //   foreignKey: "variantId",
-  // });
-  // //customer
-  // models.shippingAddress.belongsTo(models.customer, {
-  //   sourceKey: "id",
-  //   foreignKey: "customerId",
-  // });
-  // //order
-  // models.customer.hasMany(models.orders, {
-  //   sourceKey: "id",
-  //   foreignKey: "customerId",
-  // });
+  //Distributor
+  models.expense.belongsTo(models.distributor, {
+    sourceKey: "id",
+    foreignKey: "distributorId",
+  });
 };
 
 var msg = chalk.yellow("Creating Tables");

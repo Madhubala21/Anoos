@@ -465,9 +465,24 @@ distributorDbController.Delivery = {
 distributorDbController.Expense = {
   getExpense: async (tokenId) => {
     try {
-      return await distributorDbController.Models.wishlist.findAll({
+      return await distributorDbController.Models.expense.findOne({
         where: {
-          customerId: tokenId,
+          distributorId: tokenId,
+        },
+        attributes: {
+          exclude: ["status", "createdAt", "updatedAt", "id", "distributorId"],
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+  distributorExists: async (token) => {
+    try {
+      return await distributorDbController.Models.distributor.findOne({
+        where: {
+          id: token,
+          status: "active",
         },
         raw: true,
       });
@@ -475,26 +490,42 @@ distributorDbController.Expense = {
       throw Error.SomethingWentWrong();
     }
   },
-  addExpense: async (data, tokenId) => {
+  addExpense: async (data, token) => {
     try {
-      return await distributorDbController.Models.wishlist.findOne({
-        where: {
-          customerId: tokenId,
-          productId: data.productId,
-        },
-        raw: true,
+      return await distributorDbController.Models.expense.create({
+        petrol: data.petrol,
+        tea: data.tea,
+        food: data.food,
+        repair: data.repair,
+        others: data.others,
+        distributorId: token,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
 
-  updateExpense: async (data, tokenId) => {
+  updateExpense: async (data, token) => {
     try {
-      return await distributorDbController.Models.wishlist.create({
-        customerId: tokenId,
-        productId: data.productId,
-      });
+      const update = await distributorDbController.Models.expense.update(
+        {
+          petrol: data.petrol,
+          tea: data.tea,
+          food: data.food,
+          repair: data.repair,
+          others: data.others,
+        },
+        {
+          where: {
+            distributorId: token,
+          },
+        }
+      );
+      if (update[0] != 0) {
+        return "Expense updated successfully";
+      } else {
+        return "Not deleted";
+      }
     } catch (error) {
       throw Error.SomethingWentWrong();
     }

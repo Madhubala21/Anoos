@@ -183,6 +183,7 @@ authMiddleware.User = {
   //     throw Error.SomethingWentWrong("Try Again Later");
   //   }
   // },
+
   forgotPassword: async ({ body }) => {
     const userFound = await distributorDbController.Auth.checkemailExists(body);
     if (
@@ -220,6 +221,7 @@ authMiddleware.User = {
       }
     }
   },
+
   verifyEmailCode: async ({ body }) => {
     // console.log(body);
     // const validated = await PayloadCompiler.compile(body, "userLogin");
