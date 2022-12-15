@@ -775,3 +775,137 @@ adminDbController.Expense = {
   //   }
   // },
 };
+
+adminDbController.Order = {
+  checkOrderExists: async (data) => {
+    try {
+      return await adminDbController.Models.expense.findOne({
+        where: {
+          distributorId: data.id,
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  fetchOrder: async (data) => {
+    try {
+      return await adminDbController.Models.order.findOne({
+        where: {
+          storeId: data.storeId,
+          productionId: data.productionId,
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  getOrder: async (data) => {
+    try {
+      let fetchOrder = await adminDbController.Models.order.findOne({
+        where: {
+          storeId: data.storeId,
+        },
+        attributes: {
+          exclude: [
+            "createdAt",
+            "updatedAt",
+            "status",
+            "storeId",
+            "orderStatus",
+          ],
+        },
+      });
+      if (fetchOrder.productionId == null) {
+        fetchOrder.productionId = "Order not assigned";
+      } else {
+        fetchOrder = fetchOrder;
+      }
+      return fetchOrder;
+    } catch (error) {
+      console.log(error);
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  assignOrder: async (data) => {
+    try {
+      const updated = await adminDbController.Models.order.update(
+        {
+          productionId: data.productionId,
+        },
+        {
+          where: {
+            storeId: data.storeId,
+          },
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "status", "storeId"],
+          },
+        }
+      );
+      if (updated[0] != 0) {
+        return "Order assigned successfully";
+      } else {
+        return "Failed to assign order";
+      }
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+  // deleteStore: async (data) => {
+  //   try {
+  //     const updated = await adminDbController.Models.store.update(
+  //       {
+  //         status: "inactive",
+  //       },
+  //       {
+  //         where: {
+  //           id: data.id,
+  //         },
+  //       }
+  //     );
+  //     if (updated[0] != 0) {
+  //       return "Store deleted successfully";
+  //     } else {
+  //       return "Error in update";
+  //     }
+  //   } catch (error) {
+  //     throw Error.SomethingWentWrong();
+  //   }
+  // },
+
+  // updateStore: async (data, image) => {
+  //   console.log("data", data);
+  //   try {
+  //     const updated = await adminDbController.Models.store.update(
+  //       {
+  //         image: image || data.image,
+  //         name: data.name,
+  //         streetName: data.streetName,
+  //         city: data.city,
+  //         districtName: data.districtName,
+  //         phone: data.phone,
+  //         email: data.email,
+  //         gstNumber: data.gstNumber,
+  //         doorNumber: data.doorNumber,
+  //         pincode: data.pincode,
+  //         paymentMethod: data.paymentMethod,
+  //       },
+  //       {
+  //         where: {
+  //           id: data.id,
+  //         },
+  //       }
+  //     );
+  //     if (updated[0] != 0) {
+  //       return "Store updated successfully";
+  //     } else {
+  //       return "Error in update";
+  //     }
+  //   } catch (error) {
+  //     throw Error.SomethingWentWrong();
+  //   }
+  // },
+};

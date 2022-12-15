@@ -15,11 +15,9 @@ orderMiddleware.Order = {
     }
   },
 
-  addOrder: async (data) => {
-    // console.log("data", data);
-    const findOrder = await distributorDbController.Order.getOrderExists(
-      data.body
-    );
+  addOrder: async ({ body }) => {
+    let storeId = body.storeId;
+    const findOrder = await distributorDbController.Order.getOrderExists(body);
     if (
       findOrder != null &&
       findOrder != undefined &&
@@ -27,12 +25,11 @@ orderMiddleware.Order = {
     ) {
       return "Already exists";
     } else {
-      const validated = await PayloadCompiler.compile(data.body, "orderCreate");
-      let body = validated.data;
-      var fetched = await distributorDbController.Order.addOrder(
-        body,
-        data.image
-      );
+      const validated = await PayloadCompiler.compile(body, "orderCreate");
+      let data = validated.data;
+      // console.log("body", data);
+      // console.log("body.storeId", storeId);
+      var fetched = await distributorDbController.Order.addOrder(data, storeId);
       if (fetched != null && fetched != undefined && fetched != 0) {
         return "Order added successfully";
       } else {

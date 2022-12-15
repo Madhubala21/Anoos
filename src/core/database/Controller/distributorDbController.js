@@ -324,7 +324,7 @@ distributorDbController.Order = {
     try {
       return await distributorDbController.Models.order.findOne({
         where: {
-          id: data.id,
+          storeId: data.storeId,
           status: "active",
         },
         attributes: {
@@ -336,25 +336,30 @@ distributorDbController.Order = {
     }
   },
   getOrderExists: async (data) => {
+    // console.log("data", data);
     try {
       return await distributorDbController.Models.order.findOne({
         where: {
           productName: data.productName,
           quantity: data.quantity,
           amount: data.amount,
+          storeId: data.storeId,
         },
         raw: true,
       });
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },
-  addOrder: async (data) => {
+  addOrder: async (data, storeId) => {
+    // console.log("data", data);
     try {
       return await distributorDbController.Models.order.create({
         productName: data.productName,
         quantity: data.quantity,
         amount: data.amount,
+        storeId: storeId,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -372,7 +377,7 @@ distributorDbController.Order = {
         },
         {
           where: {
-            id: data.id,
+            storeId: data.storeId,
           },
         }
       );
@@ -394,7 +399,7 @@ distributorDbController.Order = {
         },
         {
           where: {
-            id: data.id,
+            storeId: data.storeId,
           },
         }
       );

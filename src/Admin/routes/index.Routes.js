@@ -3,6 +3,7 @@ import { addUsersRouter } from "./addUsers.Routes.js";
 import { authRouter } from "./auth.Routes.js";
 import { deliveryRouter } from "./delivery.Routes.js";
 import { expenseRouter } from "./expense.Routes.js";
+import { orderRouter } from "./order.Routes.js";
 import { stockRouter } from "./stock.Routes.js";
 import { storeRouter } from "./store.Routes.js";
 
@@ -20,5 +21,7 @@ adminRouter.use("/stock", stockRouter);
 adminRouter.use("/store", storeRouter);
 
 adminRouter.use("/expense", expenseRouter);
+
+adminRouter.use("/order", orderRouter);
 
 export { adminRouter };

@@ -19,6 +19,14 @@ export const modelAssociations = async () => {
     sourceKey: "id",
     foreignKey: "distributorId",
   });
+  models.order.belongsTo(models.store, {
+    sourceKey: "id",
+    foreignKey: "storeId",
+  });
+  models.order.belongsTo(models.production, {
+    sourceKey: "id",
+    foreignKey: "productionId",
+  });
 };
 
 var msg = chalk.yellow("Creating Tables");
