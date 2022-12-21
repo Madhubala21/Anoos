@@ -199,6 +199,10 @@ stock.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    stockLimit: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM("active", "inactive", "terminate"),
       allowNull: false,

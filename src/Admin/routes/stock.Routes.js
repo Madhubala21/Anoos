@@ -30,4 +30,16 @@ stockRouter.post(
   stockController.Stock.deleteStock
 );
 
+// stockRouter.post(
+//   "/stockLimits",
+//   adminAuthenticate,
+//   stockController.Stock.stockLimits
+// );
+
+stockRouter.get(
+  "/stockAlerts",
+  adminAuthenticate,
+  stockController.Stock.stockAlerts
+);
+
 export { stockRouter };

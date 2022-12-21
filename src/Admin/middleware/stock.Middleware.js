@@ -98,4 +98,35 @@ stockMiddleware.Stock = {
       }
     }
   },
+
+  // stockLimits: async ({ body }) => {
+  //   const fetched = await adminDbController.Stock.stockLimits(body);
+  //   if (
+  //     fetched != null &&
+  //     fetched != undefined &&
+  //     Object.keys(fetched).length != 0
+  //   ) {
+  //     return fetched;
+  //   } else {
+  //     return "Stock not found";
+  //   }
+  // },
+
+  stockAlerts: async () => {
+    const fetched = await adminDbController.Stock.stockAlerts();
+    if (
+      fetched != null &&
+      fetched != undefined &&
+      Object.keys(fetched).length != 0
+    ) {
+      console.log(fetched);
+      // if (Number(fetched[0].stockLimit[0]) >= Number(fetched[0].quantity[0])) {
+      //   return `Low  stock ${fetched.stockName} `;
+      // } else {
+      //   return "No problem";
+      // }
+    } else {
+      return "Stock not found";
+    }
+  },
 };

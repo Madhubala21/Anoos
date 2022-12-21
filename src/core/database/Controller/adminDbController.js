@@ -554,6 +554,7 @@ adminDbController.Stock = {
       return await adminDbController.Models.stock.create({
         stockName: data.stockName,
         quantity: data.quantity,
+        stockLimit: data.stockLimit,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
@@ -600,6 +601,38 @@ adminDbController.Stock = {
       } else {
         return "Error in update";
       }
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  // stockLimits: async (data) => {
+  //   try {
+  //     return await adminDbController.Models.stock.findOne({
+  //       where: {
+  //         id: data.id,
+  //         status: "active",
+  //       },
+  //       attributes: {
+  //         exclude: ["createdAt", "updatedAt", "status"],
+  //       },
+  //     });
+  //   } catch (error) {
+  //     throw Error.SomethingWentWrong();
+  //   }
+  // },
+
+  stockAlerts: async () => {
+    try {
+      return await adminDbController.Models.stock.findAll({
+        where: {
+          status: "active",
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "status"],
+        },
+        raw: true,
+      });
     } catch (error) {
       throw Error.SomethingWentWrong();
     }

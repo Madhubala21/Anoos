@@ -330,6 +330,9 @@ const stock = {
     quantity: {
       $ref: "defs#/definitions/stock/quantity",
     },
+    stockLimit: {
+      $ref: "defs#/definitions/stock/stockLimit",
+    },
     status: {
       $ref: "defs#/definitions/stock/status",
     },
@@ -489,7 +492,8 @@ export const stockCreate = {
   properties: {
     stockName: stock.properties.stockName,
     quantity: stock.properties.quantity,
+    stockLimit: stock.properties.stockLimit,
     status: stock.properties.status,
   },
-  required: ["stockName", "quantity"],
+  required: ["stockName", "quantity", "stockLimit"],
 };

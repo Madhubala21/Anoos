@@ -413,7 +413,11 @@
       },
       "quantity": {
         "type": "number",
-        "title": "quantity"
+        "title": "quant"
+      },
+      "stockLimit": {
+        "type": "number",
+        "title": "limit"
       },
       "status": {
         "type": "string",
