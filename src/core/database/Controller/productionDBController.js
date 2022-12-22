@@ -214,3 +214,29 @@ productionDbController.Stock = {
     }
   },
 };
+
+productionDbController.Order = {
+  orderDelivery: async (data, token) => {
+    try {
+      const update = await productionDbController.Models.order.update(
+        {
+          orderStatus: data.orderStatus,
+        },
+        {
+          where: {
+            storeId: data.storeId,
+            productionId: token,
+          },
+        }
+      );
+      if (update[0] != 0) {
+        return "Order updated successfully";
+      } else {
+        return "Not deleted";
+      }
+    } catch (error) {
+      console.log(error);
+      throw Error.SomethingWentWrong();
+    }
+  },
+};

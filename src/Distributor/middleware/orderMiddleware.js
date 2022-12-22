@@ -49,7 +49,7 @@ orderMiddleware.Order = {
       if (fetched != null && fetched != undefined && fetched != 0) {
         return fetched;
       } else {
-        return "Order not updatedd";
+        return "Order not updated";
       }
     } else {
       return "Order not found";
@@ -73,4 +73,22 @@ orderMiddleware.Order = {
       return "Order not found";
     }
   },
+
+  // orderDelivery: async ({ body }) => {
+  //   const findOrder = await distributorDbController.Order.getOrder(body);
+  //   if (
+  //     findOrder != null &&
+  //     findOrder != undefined &&
+  //     Object.keys(findOrder).length != 0
+  //   ) {
+  //     var fetched = await distributorDbController.Order.orderDelivery(body);
+  //     if (fetched != null && fetched != undefined && fetched != 0) {
+  //       return fetched;
+  //     } else {
+  //       return "Order not updated";
+  //     }
+  //   } else {
+  //     return "Order not found";
+  //   }
+  // },
 };

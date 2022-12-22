@@ -201,54 +201,64 @@ authMiddleware.User = {
   },
 
   verify: async ({ headers }) => {
-    var isMalicious = true;
-    if (headers.hasOwnProperty("productiontoken")) {
-      //check authentication
-      const findSession = await productionDbController.Auth.session.findSession(
-        headers.productiontoken
-      );
-
-      if (
-        findSession != null &&
-        findSession != undefined &&
-        Object.keys(findSession).length != 0
-      ) {
-        //decrypt token
-        var plain = CryptoJS.AES.decrypt(
-          findSession.token,
-          configs.passwordSecret
-        );
-        findSession.token = plain.toString(CryptoJS.enc.Utf8);
-
-        const decoded = await authentications.verifyUserJWT(findSession.token);
+    if (
+      headers.productiontoken == undefined &&
+      headers.productiontoken == null
+    ) {
+      throw Error.AuthenticationFailed("UnAuthorized");
+    } else {
+      var isMalicious = true;
+      if (headers.hasOwnProperty("productiontoken")) {
+        //check authentication
+        const findSession =
+          await productionDbController.Auth.session.findSession(
+            headers.productiontoken
+          );
 
         if (
-          decoded != null &&
-          decoded != undefined &&
-          decoded.status == "active"
+          findSession != null &&
+          findSession != undefined &&
+          Object.keys(findSession).length != 0
         ) {
-          const foundUser =
-            await productionDbController.Auth.checkUserExistsDecode(decoded);
-          // !=null && !=undefned - true
-          // console.log("foundUser", foundUser);
+          //decrypt token
+          var plain = CryptoJS.AES.decrypt(
+            findSession.token,
+            configs.passwordSecret
+          );
+          findSession.token = plain.toString(CryptoJS.enc.Utf8);
+
+          const decoded = await authentications.verifyUserJWT(
+            findSession.token
+          );
+
           if (
-            foundUser != null &&
-            foundUser != undefined &&
-            Object.keys(foundUser).length != 0
+            decoded != null &&
+            decoded != undefined &&
+            decoded.status == "active"
           ) {
-            return foundUser.id;
+            const foundUser =
+              await productionDbController.Auth.checkUserExistsDecode(decoded);
+            // !=null && !=undefned - true
+            // console.log("foundUser", foundUser);
+            if (
+              foundUser != null &&
+              foundUser != undefined &&
+              Object.keys(foundUser).length != 0
+            ) {
+              return foundUser.id;
+            } else {
+              throw Error.AuthenticationFailed("UnAuthorized");
+            }
           } else {
             throw Error.AuthenticationFailed("UnAuthorized");
           }
         } else {
           throw Error.AuthenticationFailed("UnAuthorized");
         }
-      } else {
-        throw Error.AuthenticationFailed("UnAuthorized");
       }
-    }
-    if (isMalicious) {
-      return false;
+      if (isMalicious) {
+        return false;
+      }
     }
   },
   viewProductionProfile: async ({ token }) => {

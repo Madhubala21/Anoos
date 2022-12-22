@@ -335,6 +335,7 @@ distributorDbController.Order = {
       throw Error.SomethingWentWrong();
     }
   },
+
   getOrderExists: async (data) => {
     // console.log("data", data);
     try {
@@ -352,6 +353,7 @@ distributorDbController.Order = {
       throw Error.SomethingWentWrong();
     }
   },
+
   addOrder: async (data, storeId) => {
     // console.log("data", data);
     try {
@@ -412,6 +414,28 @@ distributorDbController.Order = {
       throw Error.SomethingWentWrong();
     }
   },
+
+  // orderDelivery: async (data) => {
+  //   try {
+  //     const update = await distributorDbController.Models.order.update(
+  //       {
+  //         orderStatus: data.orderStatus,
+  //       },
+  //       {
+  //         where: {
+  //           storeId: data.storeId,
+  //         },
+  //       }
+  //     );
+  //     if (update[0] != 0) {
+  //       return "Order updated successfully";
+  //     } else {
+  //       return "Not deleted";
+  //     }
+  //   } catch (error) {
+  //     throw Error.SomethingWentWrong();
+  //   }
+  // },
 };
 
 distributorDbController.Delivery = {

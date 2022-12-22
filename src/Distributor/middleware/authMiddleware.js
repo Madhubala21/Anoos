@@ -323,54 +323,63 @@ authMiddleware.User = {
   },
 
   verify: async ({ headers }) => {
-    var isMalicious = true;
-    if (headers.hasOwnProperty("distributortoken")) {
-      //check authentication
-      const findSession =
-        await distributorDbController.Auth.session.findSession(
-          headers.distributortoken
-        );
-      if (
-        findSession != null &&
-        findSession != undefined &&
-        Object.keys(findSession).length != 0
-      ) {
-        //decrypt token
-        var plain = CryptoJS.AES.decrypt(
-          findSession.token,
-          configs.passwordSecret
-        );
-        findSession.token = plain.toString(CryptoJS.enc.Utf8);
-
-        const decoded = await authentications.verifyUserJWT(findSession.token);
+    if (
+      headers.distributortoken == undefined &&
+      headers.distributortoken == null
+    ) {
+      throw Error.AuthenticationFailed("UnAuthorized");
+    } else {
+      var isMalicious = true;
+      if (headers.hasOwnProperty("distributortoken")) {
+        //check authentication
+        const findSession =
+          await distributorDbController.Auth.session.findSession(
+            headers.distributortoken
+          );
         if (
-          decoded != null &&
-          decoded != undefined &&
-          decoded.status == "active"
+          findSession != null &&
+          findSession != undefined &&
+          Object.keys(findSession).length != 0
         ) {
-          // console.log("decoded", decoded);
-          const foundUser =
-            await distributorDbController.Auth.checkUserExistsDecode(decoded);
-          // console.log("foundUser", foundUser);
-          // !=null && !=undefned - true
+          //decrypt token
+          var plain = CryptoJS.AES.decrypt(
+            findSession.token,
+            configs.passwordSecret
+          );
+          findSession.token = plain.toString(CryptoJS.enc.Utf8);
+
+          const decoded = await authentications.verifyUserJWT(
+            findSession.token
+          );
           if (
-            foundUser != null &&
-            foundUser != undefined &&
-            Object.keys(foundUser).length != 0
+            decoded != null &&
+            decoded != undefined &&
+            decoded.status == "active"
           ) {
-            return foundUser.id;
+            // console.log("decoded", decoded);
+            const foundUser =
+              await distributorDbController.Auth.checkUserExistsDecode(decoded);
+            // console.log("foundUser", foundUser);
+            // !=null && !=undefned - true
+            if (
+              foundUser != null &&
+              foundUser != undefined &&
+              Object.keys(foundUser).length != 0
+            ) {
+              return foundUser.id;
+            } else {
+              throw Error.AuthenticationFailed("UnAuthorized");
+            }
           } else {
             throw Error.AuthenticationFailed("UnAuthorized");
           }
         } else {
           throw Error.AuthenticationFailed("UnAuthorized");
         }
-      } else {
-        throw Error.AuthenticationFailed("UnAuthorized");
       }
-    }
-    if (isMalicious) {
-      return false;
+      if (isMalicious) {
+        return false;
+      }
     }
   },
 
