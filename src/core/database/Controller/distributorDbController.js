@@ -242,9 +242,10 @@ distributorDbController.Store = {
       throw Error.SomethingWentWrong();
     }
   },
-  addStore: async (data, image) => {
+  addStore: async (data, image, id) => {
     try {
       return await distributorDbController.Models.store.create({
+        storeId: id,
         image: image,
         name: data.name,
         streetName: data.streetName,
@@ -568,6 +569,50 @@ distributorDbController.Expense = {
           customerId: data.customerId,
           id: data.id,
         },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+};
+
+distributorDbController.Dashboard = {
+  getDashboard: async (tokenId) => {
+    try {
+      return await distributorDbController.Models.order.findOne({
+        where: {
+          distributorId: tokenId,
+        },
+        attributes: {
+          exclude: ["status", "createdAt", "updatedAt", "id", "distributorId"],
+        },
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+  distributorExists: async (token) => {
+    try {
+      return await distributorDbController.Models.distributor.findOne({
+        where: {
+          id: token,
+          status: "active",
+        },
+        raw: true,
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+  addDashboard: async (data, token) => {
+    try {
+      return await distributorDbController.Models.order.create({
+        petrol: data.petrol,
+        tea: data.tea,
+        food: data.food,
+        repair: data.repair,
+        others: data.others,
+        distributorId: token,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();

@@ -29,10 +29,14 @@ storeMiddleware.Store = {
     } else {
       const validated = await PayloadCompiler.compile(data.body, "storeCreate");
       let body = validated.data;
-      console.log(body);
+      // console.log(body);
+      let x = Date.now().toString();
+      let date = x.slice(7);
+      let id = "Ano" + date;
       var fetched = await distributorDbController.Store.addStore(
         body,
-        data.image
+        data.image,
+        id
       );
       if (fetched != null && fetched != undefined && fetched != 0) {
         return "Store added successfully";
