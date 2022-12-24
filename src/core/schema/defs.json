@@ -347,7 +347,7 @@
       "orderStatus": {
         "type": "string",
         "title": "orderStatus",
-        "enum": ["notTaken", "processing", "prepared"]
+        "enum": ["notTaken", "processing", "prepared", "delivered"]
       },
       "status": {
         "type": "string",

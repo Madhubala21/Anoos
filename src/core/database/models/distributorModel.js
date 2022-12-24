@@ -157,7 +157,7 @@ order.init(
       allowNull: false,
     },
     orderStatus: {
-      type: DataTypes.ENUM("notTaken", "processing", "prepared"),
+      type: DataTypes.ENUM("notTaken", "processing", "prepared", "delivered"),
       allowNull: false,
       defaultValue: "notTaken",
     },

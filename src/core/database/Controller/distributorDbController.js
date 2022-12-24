@@ -576,26 +576,92 @@ distributorDbController.Expense = {
   },
 };
 
+// distributorDbController.Dashboard = {
+//   getDashboard: async (tokenId) => {
+//     try {
+//       return await distributorDbController.Models.order.findOne({
+//         where: {
+//           distributorId: tokenId,
+//         },
+//         attributes: {
+//           exclude: ["status", "createdAt", "updatedAt", "id", "distributorId"],
+//         },
+//       });
+//     } catch (error) {
+//       throw Error.SomethingWentWrong();
+//     }
+//   },
+//   distributorExists: async (token) => {
+//     try {
+//       return await distributorDbController.Models.distributor.findOne({
+//         where: {
+//           id: token,
+//           status: "active",
+//         },
+//         raw: true,
+//       });
+//     } catch (error) {
+//       throw Error.SomethingWentWrong();
+//     }
+//   },
+//   addDashboard: async (data, token) => {
+//     try {
+//       return await distributorDbController.Models.order.create({
+//         petrol: data.petrol,
+//         tea: data.tea,
+//         food: data.food,
+//         repair: data.repair,
+//         others: data.others,
+//         distributorId: token,
+//       });
+//     } catch (error) {
+//       throw Error.SomethingWentWrong();
+//     }
+//   },
+// };
+
 distributorDbController.Dashboard = {
-  getDashboard: async (tokenId) => {
+  fetchDelivered: async (data) => {
     try {
-      return await distributorDbController.Models.order.findOne({
+      return await distributorDbController.Models.order.count({
         where: {
-          distributorId: tokenId,
+          orderStatus: "delivered",
         },
-        attributes: {
-          exclude: ["status", "createdAt", "updatedAt", "id", "distributorId"],
-        },
+        raw: true,
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
     }
   },
-  distributorExists: async (token) => {
+
+  fetchUpcoming: async (data) => {
     try {
-      return await distributorDbController.Models.distributor.findOne({
+      return await distributorDbController.Models.order.count({
         where: {
-          id: token,
+          orderStatus: "prepared",
+        },
+        raw: true,
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  fetchAttendance: async (data) => {
+    try {
+      return await distributorDbController.Models.distributor.count({
+        raw: true,
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  fetchExpences: async (data) => {
+    try {
+      return await distributorDbController.Models.user.count({
+        where: {
+          paymentStatus: "paid",
           status: "active",
         },
         raw: true,
@@ -604,15 +670,27 @@ distributorDbController.Dashboard = {
       throw Error.SomethingWentWrong();
     }
   },
-  addDashboard: async (data, token) => {
+
+  fetchNewOrders: async (data) => {
     try {
-      return await distributorDbController.Models.order.create({
-        petrol: data.petrol,
-        tea: data.tea,
-        food: data.food,
-        repair: data.repair,
-        others: data.others,
-        distributorId: token,
+      return await distributorDbController.Models.user.count({
+        where: {
+          paymentStatus: "unpaid",
+          status: "active",
+        },
+        raw: true,
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
+
+  fetchRevenue: async (data) => {
+    try {
+      return await distributorDbController.Models.successStories.count({
+        where: {
+          status: "approved",
+        },
       });
     } catch (error) {
       throw Error.SomethingWentWrong();
