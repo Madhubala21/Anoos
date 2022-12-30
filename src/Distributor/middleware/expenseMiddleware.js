@@ -34,9 +34,16 @@ ExpenseMiddleware.Expense = {
       distributorExists != undefined &&
       distributorExists != 0
     ) {
+      let total =
+        Number(body.petrol) +
+        Number(body.tea) +
+        Number(body.food) +
+        Number(body.repair) +
+        Number(body.others);
       var fetched = await distributorDbController.Expense.addExpense(
         body,
-        token
+        token,
+        total
       );
       if (fetched != null && fetched != undefined && fetched != 0) {
         return "Expense added";

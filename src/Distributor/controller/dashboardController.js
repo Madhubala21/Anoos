@@ -6,7 +6,7 @@ export class dashboardController {}
 
 dashboardController.Dashboard = {
   getDashboard: async (req, res) => {
-    dashboardMiddleware.Dashboard.getDashboard(req)
+    dashboardMiddleware.Dashboard.fetchDashboard(req)
       .then((data) => {
         const response = ApplicationResult.forCreated();
         var statuscode = 0;

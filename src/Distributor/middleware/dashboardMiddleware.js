@@ -6,22 +6,29 @@ export class dashboardMiddleware {}
 
 //products
 dashboardMiddleware.Dashboard = {
-  fetchDashboard: async () => {
+  fetchDashboard: async ({ token }) => {
     const delivered = await distributorDbController.Dashboard.fetchDelivered();
     const upcoming = await distributorDbController.Dashboard.fetchUpcoming();
     const attendance =
       await distributorDbController.Dashboard.fetchAttendance();
-    const expences = await distributorDbController.Dashboard.fetchExpences();
+    const expences = await distributorDbController.Dashboard.fetchExpences(
+      token
+    );
     const newOrders = await distributorDbController.Dashboard.fetchNewOrders();
     const revenue = await distributorDbController.Dashboard.fetchRevenue();
-
+    console.log("delivered", delivered);
+    console.log("upcoming", upcoming);
+    console.log("attendance", attendance);
+    console.log("expences", expences);
+    console.log("newOrders", newOrders);
+    console.log("revenue", revenue);
     let allCount = {
-      delivered: fetchDelivered,
-      upcoming: fetchUpcoming,
-      attendance: fetchAttendance,
-      expences: fetchExpences,
-      newOrders: fetchNewOrders,
-      revenue: fetchRevenue,
+      delivered: delivered,
+      upcoming: upcoming,
+      attendance: attendance,
+      expences: expences,
+      newOrders: newOrders,
+      revenue: revenue,
     };
     return allCount;
   },

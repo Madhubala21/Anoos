@@ -380,6 +380,10 @@
       "others": {
         "type": "string",
         "title": "others"
+      },
+      "total": {
+        "type": "string",
+        "title": "others"
       }
     },
 

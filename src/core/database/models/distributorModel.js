@@ -200,6 +200,10 @@ expense.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    total: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   { sequelize: connection, freezeTableName: true }
 );

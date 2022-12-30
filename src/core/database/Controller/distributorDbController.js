@@ -495,7 +495,7 @@ distributorDbController.Delivery = {
 distributorDbController.Expense = {
   getExpense: async (tokenId) => {
     try {
-      return await distributorDbController.Models.expense.findOne({
+      return await distributorDbController.Models.expense.findAll({
         where: {
           distributorId: tokenId,
         },
@@ -520,7 +520,7 @@ distributorDbController.Expense = {
       throw Error.SomethingWentWrong();
     }
   },
-  addExpense: async (data, token) => {
+  addExpense: async (data, token, total) => {
     try {
       return await distributorDbController.Models.expense.create({
         petrol: data.petrol,
@@ -528,6 +528,7 @@ distributorDbController.Expense = {
         food: data.food,
         repair: data.repair,
         others: data.others,
+        total: total,
         distributorId: token,
       });
     } catch (error) {
@@ -657,12 +658,11 @@ distributorDbController.Dashboard = {
     }
   },
 
-  fetchExpences: async (data) => {
+  fetchExpences: async (token) => {
     try {
-      return await distributorDbController.Models.user.count({
+      return await distributorDbController.Models.expense.count({
         where: {
-          paymentStatus: "paid",
-          status: "active",
+          distributorId: token,
         },
         raw: true,
       });
@@ -673,10 +673,9 @@ distributorDbController.Dashboard = {
 
   fetchNewOrders: async (data) => {
     try {
-      return await distributorDbController.Models.user.count({
+      return await distributorDbController.Models.order.count({
         where: {
-          paymentStatus: "unpaid",
-          status: "active",
+          orderStatus: "notTaken",
         },
         raw: true,
       });
@@ -687,11 +686,17 @@ distributorDbController.Dashboard = {
 
   fetchRevenue: async (data) => {
     try {
-      return await distributorDbController.Models.successStories.count({
-        where: {
-          status: "approved",
-        },
-      });
+      // return await distributorDbController.Models.delivery.sum(
+      //   "price"
+      // where: {
+      //   customer_id: token.id,
+      //   status: "ACTIVE",
+      // },
+      // );
+
+      let query = "SELECT SUM(price) AS total_price FROM delivery";
+      //  let query = "SELECT SUM(price) AS total_salary FROM publishers";
+      return query;
     } catch (error) {
       throw Error.SomethingWentWrong();
     }

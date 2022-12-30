@@ -299,6 +299,9 @@ const expense = {
     others: {
       $ref: "defs#/definitions/expense/others",
     },
+    total: {
+      $ref: "defs#/definitions/expense/total",
+    },
   },
 };
 
@@ -469,6 +472,7 @@ export const expenseCreate = {
     food: expense.properties.food,
     repair: expense.properties.repair,
     others: expense.properties.others,
+    total: expense.properties.total,
   },
   required: ["petrol", "tea", "food", "repair", "others"],
 };
