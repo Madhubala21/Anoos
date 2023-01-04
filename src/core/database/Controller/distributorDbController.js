@@ -686,18 +686,25 @@ distributorDbController.Dashboard = {
 
   fetchRevenue: async (data) => {
     try {
-      // return await distributorDbController.Models.delivery.sum(
-      //   "price"
-      // where: {
-      //   customer_id: token.id,
-      //   status: "ACTIVE",
-      // },
-      // );
-
-      let query = "SELECT SUM(price) AS total_price FROM delivery";
+      const revenue = await distributorDbController.Models.order.findAll({
+        where: {
+          orderStatus: "delivered",
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      });
+      let sum = 0;
+      for (let i = 0; i < revenue.length; i++) {
+        sum = sum + Number(revenue[i].amount);
+      }
+      // console.log("sum", sum);
+      // let query = "SELECT SUM(price) AS total_price FROM delivery";
       //  let query = "SELECT SUM(price) AS total_salary FROM publishers";
-      return query;
+      // return query;
+      return sum;
     } catch (error) {
+      console.log(error);
       throw Error.SomethingWentWrong();
     }
   },

@@ -16,12 +16,12 @@ dashboardMiddleware.Dashboard = {
     );
     const newOrders = await distributorDbController.Dashboard.fetchNewOrders();
     const revenue = await distributorDbController.Dashboard.fetchRevenue();
-    console.log("delivered", delivered);
-    console.log("upcoming", upcoming);
-    console.log("attendance", attendance);
-    console.log("expences", expences);
-    console.log("newOrders", newOrders);
-    console.log("revenue", revenue);
+    // console.log("delivered", delivered);
+    // console.log("upcoming", upcoming);
+    // console.log("attendance", attendance);
+    // console.log("expences", expences);
+    // console.log("newOrders", newOrders);
+    // console.log("revenue", revenue);
     let allCount = {
       delivered: delivered,
       upcoming: upcoming,
