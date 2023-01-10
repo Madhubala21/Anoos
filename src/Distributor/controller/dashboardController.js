@@ -24,8 +24,8 @@ dashboardController.Dashboard = {
       });
   },
 
-  addDashboard: async (req, res) => {
-    dashboardMiddleware.Dashboard.addDashboard(req)
+  recentActivities: async (req, res) => {
+    dashboardMiddleware.Dashboard.recentActivities(req)
       .then((data) => {
         const response = ApplicationResult.forCreated();
         var statuscode = 0;

@@ -12,9 +12,9 @@ dashboardRouter.get(
 );
 
 dashboardRouter.post(
-  "/addDashboard",
+  "/recentActivities",
   DistributorAuthenticate,
-  dashboardController.Dashboard.addDashboard
+  dashboardController.Dashboard.recentActivities
 );
 
 export { dashboardRouter };

@@ -708,4 +708,17 @@ distributorDbController.Dashboard = {
       throw Error.SomethingWentWrong();
     }
   },
+
+  fetchNewOrders: async (data) => {
+    try {
+      return await distributorDbController.Models.order.count({
+        where: {
+          orderStatus: "notTaken",
+        },
+        raw: true,
+      });
+    } catch (error) {
+      throw Error.SomethingWentWrong();
+    }
+  },
 };
